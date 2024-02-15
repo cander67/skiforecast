@@ -1201,15 +1201,17 @@ class TableData:
                     if snow_level_min[1] < 1000:
                         snow_level_min[1] = round(snow_level_min[1] / 10) * 10
 
-                except:
+                except: 
                     snow_level_max = None
                     snow_level_min = None
                     snowlevel = 'SLVL: --'
+                    if list(day_data['snowLevel']['data']) == []:
+                        snowlevel = 'SLVL: --'
 
                 if snow_level_max != None and snow_level_min != None:
                     dt_sl_max = datetime.strptime(snow_level_max[0], '%Y-%m-%dT%H:%M:%S')
                     dt_sl_min = datetime.strptime(snow_level_min[0], '%Y-%m-%dT%H:%M:%S')
-                    if dt_sl_max.date() == dt_sl_min.date():
+                    if dt_sl_max.date() == dt_sl_min.date() and dt_sl_max.hour != dt_sl_min.hour:
                         if dt_sl_max.hour > dt_sl_min.hour:
                             inc = True
                             snowlevel_string = f'&#x2B06;'
@@ -1223,6 +1225,9 @@ class TableData:
                         snow_level_range = [snow_level_min[1], snow_level_max[1]]
                     if dt_sl_max.date() < dt_sl_min.date():
                         snowlevel_string = f'&#x2B07;'
+                        snow_level_range = [snow_level_max[1], snow_level_min[1]]
+                    if dt_sl_max.date() == dt_sl_min.date() and dt_sl_max.hour == dt_sl_min.hour:
+                        snowlevel_string = f'steady'
                         snow_level_range = [snow_level_max[1], snow_level_min[1]]
                     snowlevel = f'SLVL: {snow_level_range[0]:.0f}-{snow_level_range[1]:.0f}ft {snowlevel_string}'
 
