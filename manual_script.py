@@ -10,6 +10,8 @@ import src.get_endpoints as get_endpoints
 import src.get_forecasts as get_forecasts
 import src.proc_forecasts as proc_forecasts
 
+print(f'\nRunning manual_script.py\n')
+
 # Get current time
 now = datetime.now()
 
