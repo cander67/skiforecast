@@ -157,3 +157,5 @@ try:
     blob_client.upload_blob(pretty_html, overwrite=True, content_settings=my_content_setting)
 except Exception as e:
     print(f'Error writing html to blob: {e}')
+
+print(f"\nhttps://skiforecast.z5.web.core.windows.net\n")
