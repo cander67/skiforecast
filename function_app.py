@@ -1,22 +1,23 @@
-import os
-import json
-from datetime import datetime
-import bs4 as BeautifulSoup
-from dotenv import load_dotenv
 from azure.identity import DefaultAzureCredential
 from azure.storage.blob import BlobServiceClient, ContainerClient, ContentSettings
-import src.utils as utils
-import src.get_endpoints as get_endpoints
-import src.get_forecasts as get_forecasts
-import src.proc_forecasts as proc_forecasts
 import azure.functions as func
 
 app = func.FunctionApp()
 
 @app.function_name(name = "skiForecastTimer")
-@app.schedule(schedule="0 8 13 * * *", arg_name="skiForecastTimer", run_on_startup=False,
+@app.schedule(schedule="0 */2 * * * *", arg_name="skiForecastTimer", run_on_startup=False,
               use_monitor=False) 
 def cron(skiForecastTimer: func.TimerRequest) -> None:
+    import os
+    import json
+    from datetime import datetime
+    import bs4 as BeautifulSoup
+    from dotenv import load_dotenv
+    import src.utils as utils
+    import src.get_endpoints as get_endpoints
+    import src.get_forecasts as get_forecasts
+    import src.proc_forecasts as proc_forecasts
+    
     # Get current time
     now = datetime.now()
 
@@ -52,14 +53,14 @@ def cron(skiForecastTimer: func.TimerRequest) -> None:
 
     # Get forecasts, save to blob, list blob names
     try:
-        forecasts = get_forecasts.get_forecasts(endpoints)
+        forecasts = get_forecasts.get_forecasts(default_credential, endpoints)
         #print(f'FORECASTS: {forecasts}')
     except Exception as e:
         print(f'Error fetching forecasts: {e}')
 
     # Process forecasts
     try:
-        table = proc_forecasts.proc_forecasts(now, forecasts)
+        table = proc_forecasts.proc_forecasts(default_credential, now, forecasts)
         #print(f'TABLE: {table}')
     except Exception as e:
         print(f'Error processing forecasts: {e}')
