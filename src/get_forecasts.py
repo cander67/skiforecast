@@ -55,9 +55,11 @@ def get_forecasts(endpoints):
         for location in fails.keys():
             http_status = fails[location][0]
             http_error = fails[location][1]
+            location_details = locations[location]
+            endpoint = endpoints[location]
+            blob_name = f'{location}_gridData.json'
             if http_status == None and http_error == True:
                 ep = get_endpoints.get_endpoints()
-                blob_name = f'{location}_gridData.json'
                 forecast = utils.GridData(location, location_details, endpoint, header)
                 data = forecast.get_forecast()
                 response = forecast.get_status()
@@ -70,7 +72,6 @@ def get_forecasts(endpoints):
                     fails[location] = response      # Update fails list with new response
             elif http_status != None and ((300 <= http_status < 500) and http_error == True):
                 ep = get_endpoints.get_endpoints()
-                blob_name = f'{location}_gridData.json'
                 forecast = utils.GridData(location, location_details, endpoint, header)
                 data = forecast.get_forecast()
                 response = forecast.get_status()
@@ -82,7 +83,6 @@ def get_forecasts(endpoints):
                 elif response[1] == True:
                     fails[location] = response      # Update fails list with new response
             elif http_status != None and ((500 <= http_status < 600) and http_error == True):
-                blob_name = f'{location}_gridData.json'
                 forecast = utils.GridData(location, location_details, endpoint, header)
                 data = forecast.get_forecast()
                 response = forecast.get_status()
