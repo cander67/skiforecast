@@ -5,7 +5,7 @@ from azure.identity import DefaultAzureCredential
 import src.get_endpoints as get_endpoints
 import src.utils as utils
 
-def get_forecasts(endpoints):
+def get_forecasts(default_credential, endpoints):
     '''Get forecast data for ski area locations, save to blob, return list of blob names
     Args:
         endpoints (dict): Dictionary of endpoints for each location
