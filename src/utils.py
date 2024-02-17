@@ -695,7 +695,7 @@ class GridData:
             #self._data = data
             self._blob = json.dumps(data, sort_keys=False, indent=4)
 
-            # Limit calls to 2 every 1 seconds
+            # Limit calls to 1 every 1 seconds
             time.sleep(1)
 
         except Exception as e:
@@ -904,6 +904,7 @@ class TableData:
         
         self._forecast = parsed_forecast
         results = {'day0': {}, 'day1': {}, 'day2': {}, 'day3': {}, 'day4': {}, 'day5': {}, 'day6': {}}
+        date_strings = {'day0': None, 'day1': None, 'day2': None, 'day3': None, 'day4': None, 'day5': None, 'day6': None}
 
         for day in self._time_periods.keys():
             daily_results = {}
@@ -928,12 +929,22 @@ class TableData:
                             date = dt_0.date()
                             day_of_week = date.strftime('%A')
                             date_str = date.strftime('%Y-%m-%d')
+                            if date_strings.get(day) == None:
+                                date_strings[day] = date_str
                         except TypeError:
+                            dt_0 = datetime.strptime(date_strings[day]+'T06:00:00', '%Y-%m-%dT%H:%M:%S')
+                            date = dt_0.date()
+                            day_of_week = date.strftime('%A')
+                            date_str = date_strings[day]
                             pass
                         # Collect property values for this day
                         try:
                             times_values = self._forecast['predictions'][property]['data'][day]
                             if times_values == None:
+                                if property == 'weather':
+                                    self._forecast['predictions'][property]['data'][day] = [(dt_0.strftime('%Y-%m-%dT%H:%M:%S'), [[None, None, None]])]
+                                if property != 'weather':
+                                    self._forecast['predictions'][property]['data'][day] = [(dt_0.strftime('%Y-%m-%dT%H:%M:%S'), None)]
                                 continue
                         except:
                             print(f'EXCEPT: {property}: {times_values}')
@@ -988,63 +999,71 @@ class TableData:
 
                         # Initialize dictionaries for metric and standard results
                         calculated_values = {}
-
+                        
                         if property != 'weather':
 
-                            for calculation in self._properties[property]['calculations']:
+                            if times_values[0][1] != None:
+
+                                for calculation in self._properties[property]['calculations']:
+
+                                    if calculation == 'max' and times != [] and values != []:
+                                        max = get_max_tuple(times, values)
+                                        if current_units == new_units:
+                                            calculated_values[calculation] = max
+                                        elif current_units != new_units:
+                                            conv = convert_units(max[1], property, current_units)
+                                            new_units = conv[0]
+                                            max = (max[0], conv[1])
+                                            calculated_values[calculation] = max
+                                    elif calculation == 'min' and times != [] and values != []:
+                                        min = get_min_tuple(times, values)
+                                        if current_units == new_units:
+                                            calculated_values[calculation] = min
+                                        elif current_units != new_units:    
+                                            conv = convert_units(min[1], property, current_units)
+                                            new_units = conv[0]
+                                            min = (min[0], conv[1])
+                                            calculated_values[calculation] = min
+                                    elif calculation == 'avg' and times != [] and values != []:
+                                        avg = get_avg_value(values)
+                                        if current_units == new_units:
+                                            calculated_values[calculation] = avg
+                                        elif current_units != new_units:
+                                            conv = convert_units(avg, property, current_units)
+                                            new_units = conv[0]
+                                            avg = conv[1]
+                                            calculated_values[calculation] = avg
+                                    elif calculation == 'sum' and times != [] and values != []:
+                                        sum = get_sum(values)
+                                        if current_units == new_units:
+                                            calculated_values[calculation] = sum
+                                            continue
+                                        elif current_units != new_units:
+                                            conv = convert_units(sum, property, current_units)
+                                            new_units = conv[0]
+                                            sum = conv[1]
+                                            calculated_values[calculation] = sum
                                 
-                                if calculation == 'max' and times != [] and values != []:
-                                    max = get_max_tuple(times, values)
-                                    if current_units == new_units:
-                                        calculated_values[calculation] = max
-                                    elif current_units != new_units:
-                                        conv = convert_units(max[1], property, current_units)
-                                        new_units = conv[0]
-                                        max = (max[0], conv[1])
-                                        calculated_values[calculation] = max
-                                elif calculation == 'min' and times != [] and values != []:
-                                    min = get_min_tuple(times, values)
-                                    if current_units == new_units:
-                                        calculated_values[calculation] = min
-                                    elif current_units != new_units:    
-                                        conv = convert_units(min[1], property, current_units)
-                                        new_units = conv[0]
-                                        min = (min[0], conv[1])
-                                        calculated_values[calculation] = min
-                                elif calculation == 'avg' and times != [] and values != []:
-                                    avg = get_avg_value(values)
-                                    if current_units == new_units:
-                                        calculated_values[calculation] = avg
-                                    elif current_units != new_units:
-                                        conv = convert_units(avg, property, current_units)
-                                        new_units = conv[0]
-                                        avg = conv[1]
-                                        calculated_values[calculation] = avg
-                                elif calculation == 'sum' and times != [] and values != []:
-                                    sum = get_sum(values)
-                                    if current_units == new_units:
-                                        calculated_values[calculation] = sum
-                                        continue
-                                    elif current_units != new_units:
-                                        conv = convert_units(sum, property, current_units)
-                                        new_units = conv[0]
-                                        sum = conv[1]
-                                        calculated_values[calculation] = sum
-                            
-                            time_period_results[property] = {'units': new_units,
-                                                            'data': calculated_values}
-                            
-                            # Set Status for this property and day
-                            if len(time_period_results[property]['data']) > 0:
-                                try:
-                                    if property != 'snowLevel':
-                                        status = check_status(property, calculated_values, elev = None)
-                                    if property == 'snowLevel':
-                                        status = check_status(property, calculated_values, self._elev)
-                                except Exception as e:
-                                    print(f'EXCEPT: {property}, {day}: {times_values}')
-                                    pass
-                                time_period_status[property] = status
+                                time_period_results[property] = {'units': new_units,
+                                                                'data': calculated_values}
+                                
+                                # Set Status for this property and day
+                                if len(time_period_results[property]['data']) > 0:
+                                    try:
+                                        if property != 'snowLevel':
+                                            status = check_status(property, calculated_values, elev = None)
+                                        if property == 'snowLevel':
+                                            status = check_status(property, calculated_values, self._elev)
+                                    except Exception as e:
+                                        print(f'EXCEPT: {property}, {day}: {times_values}')
+                                        pass
+                                    time_period_status[property] = status
+
+                            elif times_values[0][1] == None:
+                                time_period_results[property] = {'units': new_units,
+                                                                'data': (None)}
+                                time_period_status[property] = 2
+                                print(f'ELIF: {property}, {day}: {times_values}')
 
                         elif property == 'weather':
                             # Get weather data
@@ -1058,6 +1077,12 @@ class TableData:
                             if time_period_results[property] != None:
                                 status = check_status(property, time_period_results[property], elev = None)
                                 time_period_status[property] = status
+                            
+                            # Set data to None if no weather data, set status to 2
+                            elif time_period_results[property] == None:
+                                time_period_results[property] = {'units': new_units,
+                                                            'data': (None)}
+                                time_period_status[property] = 2
 
                 except Exception as e:
                     if Exception == ValueError:
