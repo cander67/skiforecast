@@ -47,14 +47,14 @@ except Exception as e:
 
 # Get forecasts, save to blob, list blob names
 try:
-    forecasts = get_forecasts.get_forecasts(endpoints)
+    forecasts = get_forecasts.get_forecasts(default_credential, endpoints)
     #print(f'FORECASTS: {forecasts}')
 except Exception as e:
     print(f'Error fetching forecasts: {e}')
 
 # Process forecasts
 try:
-    table = proc_forecasts.proc_forecasts(now, forecasts)
+    table = proc_forecasts.proc_forecasts(default_credential, now, forecasts)
     #print(f'TABLE: {table}')
 except Exception as e:
     print(f'Error processing forecasts: {e}')
