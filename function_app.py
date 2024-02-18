@@ -1,5 +1,3 @@
-from azure.identity import DefaultAzureCredential
-from azure.storage.blob import BlobServiceClient, ContainerClient, ContentSettings
 import azure.functions as func
 
 app = func.FunctionApp()
@@ -16,6 +14,8 @@ def cron(skiForecastTimer: func.TimerRequest) -> None:
     import src.get_endpoints as get_endpoints
     import src.get_forecasts as get_forecasts
     import src.proc_forecasts as proc_forecasts
+    from azure.identity import DefaultAzureCredential
+    from azure.storage.blob import BlobServiceClient, ContainerClient, ContentSettings
     
     # Get current time
     now = datetime.now()
