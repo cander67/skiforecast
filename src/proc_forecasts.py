@@ -1,7 +1,7 @@
 import os
 import json
 from dotenv import load_dotenv
-from azure.identity import DefaultAzureCredential
+#from azure.identity import DefaultAzureCredential
 import src.utils as utils
 
 def proc_forecasts(default_credential, time, forecasts):
@@ -20,7 +20,7 @@ def proc_forecasts(default_credential, time, forecasts):
     time_periods = json.loads(os.getenv("TIME_PERIODS"))
     properties = json.loads(os.getenv("PROPERTIES"))
     account_url = os.getenv("BLOB_ACCOUNT_URL")
-    default_credential = DefaultAzureCredential()
+    #default_credential = DefaultAzureCredential()
     container_name = "skiforecast"
     
     # Create table data from forecast data

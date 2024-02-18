@@ -695,7 +695,7 @@ class GridData:
             #self._data = data
             self._blob = json.dumps(data, sort_keys=False, indent=4)
 
-            # Limit calls to 2 every 1 seconds
+            # Limit calls to 1 every 1 seconds
             time.sleep(1)
 
         except Exception as e:
@@ -904,15 +904,22 @@ class TableData:
         
         self._forecast = parsed_forecast
         results = {'day0': {}, 'day1': {}, 'day2': {}, 'day3': {}, 'day4': {}, 'day5': {}, 'day6': {}}
+        date_strings = {'day0': None, 'day1': None, 'day2': None, 'day3': None, 'day4': None, 'day5': None, 'day6': None}
 
         for day in self._time_periods.keys():
+            #print(day)
             daily_results = {}
             for time_period in self._time_periods[day]:
+                #print(time_period)
                 time_period_results = {}
                 time_period_status = {}
                 overall_status = 3
                 try:   
                     for property in self._forecast['predictions'].keys():
+                        #if property == 'weather':
+                            #print(f'calc_table_data: {day}, {time_period}, {property}')
+                        #if property == 'snowLevel':
+                            #print(f'calc_table_data: {day}, {time_period}, {property}')
                         max = None
                         min = None
                         avg = None
@@ -928,12 +935,49 @@ class TableData:
                             date = dt_0.date()
                             day_of_week = date.strftime('%A')
                             date_str = date.strftime('%Y-%m-%d')
+                            if date_strings.get(day) == None:
+                                date_strings[day] = date_str
                         except TypeError:
-                            pass
+                            #print(f'EXCEPT, TYPEERROR: {property}, {day}, {time_period}')
+                            if time_period == '24h':
+                                dt_0 = datetime.strptime(date_strings[day]+'T06:00:00', '%Y-%m-%dT%H:%M:%S')
+                                date = dt_0.date()
+                                day_of_week = date.strftime('%A')
+                                date_str = date_strings[day]
+                                if property == 'weather':
+                                    self._forecast['predictions'][property]['data'][day] = [(dt_0.strftime('%Y-%m-%dT%H:%M:%S'), [[None, None, None]])]
+                                if property == 'snowLevel':
+                                    self._forecast['predictions'][property]['data'][day] = [(dt_0.strftime('%Y-%m-%dT%H:%M:%S'), None)]
+                                #print(f"NEW TIME: {dt_0.strftime('%Y-%m-%dT%H:%M:%S')}")
+                            if time_period == 'am':
+                                dt_0 = datetime.strptime(date_strings[day]+'T06:00:00', '%Y-%m-%dT%H:%M:%S')
+                                date = dt_0.date()
+                                day_of_week = date.strftime('%A')
+                                date_str = date_strings[day]
+                                #print(f"NEW TIME: {dt_0.strftime('%Y-%m-%dT%H:%M:%S')}")
+                            if time_period == 'pm':
+                                dt_0 = datetime.strptime(date_strings[day]+'T12:00:00', '%Y-%m-%dT%H:%M:%S')
+                                date = dt_0.date()
+                                day_of_week = date.strftime('%A')
+                                date_str = date_strings[day]
+                                #print(f"NEW TIME: {dt_0.strftime('%Y-%m-%dT%H:%M:%S')}")
+                            if time_period == 'overnight':
+                                dt_0 = datetime.strptime(date_strings[day]+'T18:00:00', '%Y-%m-%dT%H:%M:%S')
+                                date = dt_0.date()
+                                day_of_week = date.strftime('%A')
+                                date_str = date_strings[day]
+                                #print(f"NEW TIME: {dt_0.strftime('%Y-%m-%dT%H:%M:%S')}")
+                                pass
                         # Collect property values for this day
                         try:
                             times_values = self._forecast['predictions'][property]['data'][day]
                             if times_values == None:
+                                if property == 'weather':
+                                    self._forecast['predictions'][property]['data'][day] = [(dt_0.strftime('%Y-%m-%dT%H:%M:%S'), [[None, None, None]])]
+                                    #print(f"TRY WEATHER: {self._forecast['predictions'][property]['data'][day]}")
+                                if property == 'snowLevel':
+                                    self._forecast['predictions'][property]['data'][day] = [(dt_0.strftime('%Y-%m-%dT%H:%M:%S'), None)]
+                                    #print(f"TRY SNOWLEVEL: {self._forecast['predictions'][property]['data'][day]}")
                                 continue
                         except:
                             print(f'EXCEPT: {property}: {times_values}')
@@ -955,7 +999,10 @@ class TableData:
                         for _ in range(len(times_values)):
                             _24h_times.append(times_values[_][0])
                             _24h_values.append(times_values[_][1])
-                            #print(f'24h TIMES: {_24h_times}, {_24h_values}')
+                            #if property == 'weather':
+                                #print(f'WEATHER 24h TIMES: {_24h_times}, {_24h_values}')
+                            #if property == 'snowLevel':
+                                #print(f'SNOWLEVEL 24h TIMES: {_24h_times}, {_24h_values}')
                             dt = datetime.strptime(times_values[_][0], '%Y-%m-%dT%H:%M:%S')
                             if dt.day == dt_0.day and dt.hour < 12:
                                 am_times.append(times_values[_][0])
@@ -989,62 +1036,75 @@ class TableData:
                         # Initialize dictionaries for metric and standard results
                         calculated_values = {}
 
+                        #if property == 'weather':
+                            #print(f'WEATHER: {day}, {time_period}: {times_values}')
+                        #if property == 'snowLevel':
+                            #print(f'SNOWLEVEL: {day}, {time_period}: {times_values}')
+                        
                         if property != 'weather':
 
-                            for calculation in self._properties[property]['calculations']:
+                            if times_values[0][1] != None:
+
+                                for calculation in self._properties[property]['calculations']:
+
+                                    if calculation == 'max' and times != [] and values != []:
+                                        max = get_max_tuple(times, values)
+                                        if current_units == new_units:
+                                            calculated_values[calculation] = max
+                                        elif current_units != new_units:
+                                            conv = convert_units(max[1], property, current_units)
+                                            new_units = conv[0]
+                                            max = (max[0], conv[1])
+                                            calculated_values[calculation] = max
+                                    elif calculation == 'min' and times != [] and values != []:
+                                        min = get_min_tuple(times, values)
+                                        if current_units == new_units:
+                                            calculated_values[calculation] = min
+                                        elif current_units != new_units:    
+                                            conv = convert_units(min[1], property, current_units)
+                                            new_units = conv[0]
+                                            min = (min[0], conv[1])
+                                            calculated_values[calculation] = min
+                                    elif calculation == 'avg' and times != [] and values != []:
+                                        avg = get_avg_value(values)
+                                        if current_units == new_units:
+                                            calculated_values[calculation] = avg
+                                        elif current_units != new_units:
+                                            conv = convert_units(avg, property, current_units)
+                                            new_units = conv[0]
+                                            avg = conv[1]
+                                            calculated_values[calculation] = avg
+                                    elif calculation == 'sum' and times != [] and values != []:
+                                        sum = get_sum(values)
+                                        if current_units == new_units:
+                                            calculated_values[calculation] = sum
+                                            continue
+                                        elif current_units != new_units:
+                                            conv = convert_units(sum, property, current_units)
+                                            new_units = conv[0]
+                                            sum = conv[1]
+                                            calculated_values[calculation] = sum
                                 
-                                if calculation == 'max' and times != [] and values != []:
-                                    max = get_max_tuple(times, values)
-                                    if current_units == new_units:
-                                        calculated_values[calculation] = max
-                                    elif current_units != new_units:
-                                        conv = convert_units(max[1], property, current_units)
-                                        new_units = conv[0]
-                                        max = (max[0], conv[1])
-                                        calculated_values[calculation] = max
-                                elif calculation == 'min' and times != [] and values != []:
-                                    min = get_min_tuple(times, values)
-                                    if current_units == new_units:
-                                        calculated_values[calculation] = min
-                                    elif current_units != new_units:    
-                                        conv = convert_units(min[1], property, current_units)
-                                        new_units = conv[0]
-                                        min = (min[0], conv[1])
-                                        calculated_values[calculation] = min
-                                elif calculation == 'avg' and times != [] and values != []:
-                                    avg = get_avg_value(values)
-                                    if current_units == new_units:
-                                        calculated_values[calculation] = avg
-                                    elif current_units != new_units:
-                                        conv = convert_units(avg, property, current_units)
-                                        new_units = conv[0]
-                                        avg = conv[1]
-                                        calculated_values[calculation] = avg
-                                elif calculation == 'sum' and times != [] and values != []:
-                                    sum = get_sum(values)
-                                    if current_units == new_units:
-                                        calculated_values[calculation] = sum
-                                        continue
-                                    elif current_units != new_units:
-                                        conv = convert_units(sum, property, current_units)
-                                        new_units = conv[0]
-                                        sum = conv[1]
-                                        calculated_values[calculation] = sum
-                            
-                            time_period_results[property] = {'units': new_units,
-                                                            'data': calculated_values}
-                            
-                            # Set Status for this property and day
-                            if len(time_period_results[property]['data']) > 0:
-                                try:
-                                    if property != 'snowLevel':
-                                        status = check_status(property, calculated_values, elev = None)
-                                    if property == 'snowLevel':
-                                        status = check_status(property, calculated_values, self._elev)
-                                except Exception as e:
-                                    print(f'EXCEPT: {property}, {day}: {times_values}')
-                                    pass
-                                time_period_status[property] = status
+                                time_period_results[property] = {'units': new_units,
+                                                                'data': calculated_values}
+                                
+                                # Set Status for this property and day
+                                if len(time_period_results[property]['data']) > 0:
+                                    try:
+                                        if property != 'snowLevel':
+                                            status = check_status(property, calculated_values, elev = None)
+                                        if property == 'snowLevel':
+                                            status = check_status(property, calculated_values, self._elev)
+                                    except Exception as e:
+                                        print(f'EXCEPT: {property}, {day}: {times_values}')
+                                        pass
+                                    time_period_status[property] = status
+
+                            elif times_values[0][1] == None:
+                                time_period_results[property] = {'units': new_units,
+                                                                'data': (None)}
+                                time_period_status[property] = 2
+                                #print(f'ELIF: {property}, {day}, {time_period}: {times_values}')
 
                         elif property == 'weather':
                             # Get weather data
@@ -1058,6 +1118,13 @@ class TableData:
                             if time_period_results[property] != None:
                                 status = check_status(property, time_period_results[property], elev = None)
                                 time_period_status[property] = status
+                            
+                            # Set data to None if no weather data, set status to 2
+                            elif times_values[0][1][0] == None:
+                                time_period_results[property] = {'units': new_units,
+                                                            'data': (None)}
+                                time_period_status[property] = 2
+                                #print(f'ELIF: {property}, {day}, {time_period}: {times_values}')
 
                 except Exception as e:
                     if Exception == ValueError:
@@ -1140,6 +1207,7 @@ class TableData:
                     prob_precip = day_data['probabilityOfPrecipitation']['data']['avg']
                     lo = day_data['quantitativePrecipitation']['data']['sum']
                     hi = day_data['snowfallAmount']['data']['sum']
+                    #print(f'TRY: WEATHER: {weather}')
                 except:
                     prob_precip = day_data['probabilityOfPrecipitation']['data']['avg']
                     lo = day_data['quantitativePrecipitation']['data']['sum']
@@ -1153,10 +1221,23 @@ class TableData:
                         weather = [(dt, [['rain']])]
                     if hi > 0 and lo == 0:
                         weather = [(dt, [['snow']])]
+
+                    #print(f'EXCEPT: {weather}, {prob_precip}, {lo}, {hi}')
                     
-                if weather or prob_precip or lo or hi == None:
+                #if weather or prob_precip or lo or hi == None:
+                    #precipitation = 'PRECIP: --'
+                    #print(f'weather & prob_precip: == None')
+                    #print(f'weather: {weather}, prob_precip: {prob_precip}, lo: {lo}, hi: {hi}')
+                    #print(f'weather: {type(weather)}, prob_precip: {type(prob_precip)}, lo: {type(lo)}, hi: {type(hi)}')
+                if (len(weather) == 1 and weather[0][1] == [[None, None, None]]) or ((prob_precip == None) or (lo == None) or (hi == None)):
                     precipitation = 'PRECIP: --'
-                if weather and prob_precip != None:
+                    #print(f'weather == [[None, None, None]] or prob_precip: == None')
+                    #print(f'weather: {weather}, prob_precip: {prob_precip}, lo: {lo}, hi: {hi}')
+                    #print(f'weather: {len(weather)}, {weather[0][1]}, {type(weather[0][1])}, {type(weather)}, prob_precip: {type(prob_precip)}, lo: {type(lo)}, hi: {type(hi)}')
+                if (len(weather) >= 1 and weather[0][1] != [[None, None, None]]) and prob_precip != None:
+                    #print(f'weather and prob_precip: != None')
+                    #print(f'weather: {weather}, prob_precip: {prob_precip}, lo: {lo}, hi: {hi}')
+                    #print(f'weather: {len(weather)}, {weather[0][1]}, {type(weather[0][1])}, {type(weather)}, prob_precip: {type(prob_precip)}, lo: {type(lo)}, hi: {type(hi)}')
                     for i in range(len(weather)):
                         for j in range(len(weather[i][1])):
                             if weather[i][1][j][0] == 'snow':
@@ -1187,9 +1268,13 @@ class TableData:
                         precip_string = f'NONE'
 
                     precipitation = f'{precip_string}, {prob_precip:.0f}%'
+                #print(f'PRECIPITATION: {day}, {precipitation}')
 
                 # Snow Level
                 try:
+                    if list(day_data['snowLevel']['data']) == []:
+                        snowlevel = 'SLVL: --'
+                    
                     snow_level_max = list(day_data['snowLevel']['data']['max'])
                     snow_level_min = list(day_data['snowLevel']['data']['min'])
                     if snow_level_max[1] >= 1000:
@@ -1201,15 +1286,18 @@ class TableData:
                     if snow_level_min[1] < 1000:
                         snow_level_min[1] = round(snow_level_min[1] / 10) * 10
 
-                except:
+                except: 
+                    #print(f'RESETING SNOW LEVEL: {day}')
                     snow_level_max = None
                     snow_level_min = None
                     snowlevel = 'SLVL: --'
+                    #if list(day_data['snowLevel']['data']) == []:
+                        #snowlevel = 'SLVL: --'
 
                 if snow_level_max != None and snow_level_min != None:
                     dt_sl_max = datetime.strptime(snow_level_max[0], '%Y-%m-%dT%H:%M:%S')
                     dt_sl_min = datetime.strptime(snow_level_min[0], '%Y-%m-%dT%H:%M:%S')
-                    if dt_sl_max.date() == dt_sl_min.date():
+                    if dt_sl_max.date() == dt_sl_min.date() and dt_sl_max.hour != dt_sl_min.hour:
                         if dt_sl_max.hour > dt_sl_min.hour:
                             inc = True
                             snowlevel_string = f'&#x2B06;'
@@ -1224,7 +1312,12 @@ class TableData:
                     if dt_sl_max.date() < dt_sl_min.date():
                         snowlevel_string = f'&#x2B07;'
                         snow_level_range = [snow_level_max[1], snow_level_min[1]]
+                    if dt_sl_max.date() == dt_sl_min.date() and dt_sl_max.hour == dt_sl_min.hour:
+                        snowlevel_string = f'steady'
+                        snow_level_range = [snow_level_max[1], snow_level_min[1]]
                     snowlevel = f'SLVL: {snow_level_range[0]:.0f}-{snow_level_range[1]:.0f}ft {snowlevel_string}'
+
+                #print(f'SNOW LEVEL: {day}, {snowlevel}')
 
                 # Temps
                 temps = []
