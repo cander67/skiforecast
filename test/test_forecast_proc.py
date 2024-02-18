@@ -63,3 +63,10 @@ except Exception as e:
 with open(f'{path}Loup Loup_table_data.json', 'w') as f:
     print(json.dumps(table_data, sort_keys=False, indent=4), file = f)
 f.close()
+
+# Create table row
+try:
+    row = setup.create_row(table_data)
+    #print(f'ROW: {row}')
+except Exception as e:
+    print(f'Error creating table row: {e}')

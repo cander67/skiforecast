@@ -45,6 +45,10 @@ def get_forecasts(default_credential, endpoints):
         elif response[1] == True:
             fails[location] = response
 
+    location = None
+    location_details = None
+    endpoint = None
+
     # Handle missed endpoints
     # Pass if all endpoints are found
     if len(fails) == 0:
@@ -99,6 +103,10 @@ def get_forecasts(default_credential, endpoints):
                 fails = {}
                 break
         
+            location = None
+            location_details = None
+            endpoint = None
+
         # Return unresolved fails
         if len(fails) != 0:
             for key in (resolved.keys() - fails.keys()):
