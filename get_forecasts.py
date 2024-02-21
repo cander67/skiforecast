@@ -1,9 +1,8 @@
 import os
 import json
 from dotenv import load_dotenv
-#from azure.identity import DefaultAzureCredential
-import src.get_endpoints as get_endpoints
-import src.utils as utils
+import get_endpoints as get_endpoints
+import utils as utils
 
 def get_forecasts(default_credential, endpoints):
     '''Get forecast data for ski area locations, save to blob, return list of blob names

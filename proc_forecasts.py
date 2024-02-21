@@ -1,8 +1,7 @@
 import os
 import json
 from dotenv import load_dotenv
-#from azure.identity import DefaultAzureCredential
-import src.utils as utils
+import utils as utils
 
 def proc_forecasts(default_credential, time, forecasts):
     '''Create table data from forecast data

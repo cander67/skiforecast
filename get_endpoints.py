@@ -1,7 +1,7 @@
 import os
 import json
 from dotenv import load_dotenv
-import src.utils as utils
+import utils as utils
 
 def get_endpoints():
     '''Get endpoints from NOAA API, cache endpoints in a blob'''

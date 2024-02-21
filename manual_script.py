@@ -5,10 +5,10 @@ import bs4 as BeautifulSoup
 from dotenv import load_dotenv
 from azure.identity import DefaultAzureCredential
 from azure.storage.blob import BlobServiceClient, ContainerClient, ContentSettings
-import src.utils as utils
-import src.get_endpoints as get_endpoints
-import src.get_forecasts as get_forecasts
-import src.proc_forecasts as proc_forecasts
+import utils as utils
+import get_endpoints as get_endpoints
+import get_forecasts as get_forecasts
+import proc_forecasts as proc_forecasts
 
 print(f'\nRunning manual_script.py\n')
 
