@@ -7,7 +7,7 @@ from datetime import datetime
 from dotenv import load_dotenv
 #from azure.identity import DefaultAzureCredential
 #from azure.storage.blob import BlobServiceClient, ContainerClient, ContentSettings
-from src import utils as utils
+import utils as utils
 #import src.get_endpoints as get_endpoints
 #import src.get_forecasts as get_forecasts
 #import src.proc_forecasts as proc_forecasts
