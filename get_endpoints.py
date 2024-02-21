@@ -2,6 +2,7 @@ import os
 import json
 from dotenv import load_dotenv
 import utils as utils
+import logging
 
 def get_endpoints():
     '''Get endpoints from NOAA API, cache endpoints in a blob'''
@@ -35,7 +36,7 @@ def get_endpoints():
                     del locations[key]
     
     except Exception as e:
-        print(f'Error in get_endpoints: \n{e}\n')
+        logging.info(f'\n\nError in get_endpoints: \n{e}\n\n')
         endpoints = None
 
     return endpoints

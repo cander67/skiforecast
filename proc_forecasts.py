@@ -2,6 +2,7 @@ import os
 import json
 from dotenv import load_dotenv
 import utils as utils
+import logging
 
 def proc_forecasts(default_credential, time, forecasts):
     '''Create table data from forecast data
@@ -33,7 +34,7 @@ def proc_forecasts(default_credential, time, forecasts):
             blob_data = utils.readblob(forecasts[location], container_name, account_url, default_credential)
             blob_data = json.loads(blob_data.decode())
         except Exception as e:
-            print(f'Error reading forecast, {location}: {e}')
+            logging.info(f'\n\nError reading forecast, {location}: {e}\n\n')
 
         # Instantiate TableData object
         setup = utils.TableData(time, location, time_periods, properties)
@@ -42,19 +43,19 @@ def proc_forecasts(default_credential, time, forecasts):
         try:
             parsed = setup.parse_forecast(blob_data)
         except Exception as e:
-            print(f'Error parsing forecast, {location}: {e}')
+            logging.info(f'\n\nError parsing forecast, {location}: {e}\n\n')
 
         # Calculate table data
         try:
             table_data = setup.calculate_table_data(parsed)
         except Exception as e:
-            print(f'Error calculating table data, {location}: {e}')
+            logging.info(f'\n\nError calculating table data, {location}: {e}\n\n')
 
         # Create table row
         try:
             row = setup.create_row(table_data)
         except Exception as e:
-            print(f'Error creating table row, {location}: {e}')
+            logging.info(f'\n\nError creating table row, {location}: {e}\n\n')
 
         # Append row to table
         table.append_row(row)

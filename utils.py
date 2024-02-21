@@ -4,6 +4,7 @@ import re
 import time
 from datetime import datetime, timedelta
 from azure.storage.blob import BlobServiceClient
+import logging
 
 def writeblob(blob_name, blob_input, container_name, account_url, default_credential):
     '''Write blob to Azure Storage
@@ -27,7 +28,7 @@ def writeblob(blob_name, blob_input, container_name, account_url, default_creden
         blob_client.upload_blob(blob_input, overwrite=True)
 
     except Exception as e:
-        print(f'ERROR: {e}')
+        logging.info(f'\n\nERROR: {e}\n\n')
 
     return None
 
@@ -53,7 +54,7 @@ def readblob(blob_name, container_name, account_url, default_credential):
         blob_output = blob.readall()
 
     except Exception as e:
-        print(f'ERROR: {e}')
+        logging.info(f'\n\nERROR: {e}\n\n')
 
     return blob_output
 
@@ -638,7 +639,7 @@ class APIEndpoints:
                 time.sleep(0.25)
 
             except Exception as e:
-                print(f'Error in APIEndpoints.__init__: \n{location}\n{e}\n')
+                logging.info(f'\n\nError in APIEndpoints.__init__: \n{location}\n{e}\n\n')
 
     def get_endpoints(self):
         '''Return endpoints'''
@@ -699,7 +700,7 @@ class GridData:
             time.sleep(1)
 
         except Exception as e:
-            print(f'Error in GridData.__init__: \n{self._location}\n{e}\n')
+            logging.info(f'\n\nError in GridData.__init__: \n{self._location}\n{e}\n\n')
             self._request_error = True
 
         return self._blob
@@ -980,7 +981,7 @@ class TableData:
                                     #print(f"TRY SNOWLEVEL: {self._forecast['predictions'][property]['data'][day]}")
                                 continue
                         except:
-                            print(f'EXCEPT: {property}: {times_values}')
+                            logging.info(f'\n\nEXCEPT: {property}: {times_values}\n\n')
                             pass
                         
                         # Initialize lists for 24h, am, pm, and overnight values
@@ -1096,7 +1097,7 @@ class TableData:
                                         if property == 'snowLevel':
                                             status = check_status(property, calculated_values, self._elev)
                                     except Exception as e:
-                                        print(f'EXCEPT: {property}, {day}: {times_values}')
+                                        logging.info(f'\n\nEXCEPT: {property}, {day}: {times_values}\n\n')
                                         pass
                                     time_period_status[property] = status
 
@@ -1128,10 +1129,10 @@ class TableData:
 
                 except Exception as e:
                     if Exception == ValueError:
-                        print(f'VALUE ERROR: {day}, {time_period}, {property}')
+                        logging.info(f'\n\nVALUE ERROR: {day}, {time_period}, {property}\n\n')
                         pass
                     else:
-                        print(f'OTHER ERROR: {self._forecast["href"]}, {day}, {time_period}, {property}, {e}')
+                        logging.info(f'\n\nOTHER ERROR: {self._forecast["href"]}, {day}, {time_period}, {property}, {e}\n\n')
                         pass
 
                 # Return minimum value of statuses for this time period
@@ -1415,7 +1416,7 @@ class TableData:
                 row.append([text, alt, status])
 
             except Exception as e:
-                print(f'EXCEPT: {location}, {day}, {e}')
+                logging.info(f'\n\nEXCEPT: {location}, {day}, {e}\n\n')
                 pass
 
         #print("OUTPUT")

@@ -3,6 +3,7 @@ import json
 from dotenv import load_dotenv
 import get_endpoints as get_endpoints
 import utils as utils
+import logging
 
 def get_forecasts(default_credential, endpoints):
     '''Get forecast data for ski area locations, save to blob, return list of blob names
@@ -51,7 +52,7 @@ def get_forecasts(default_credential, endpoints):
     # Handle missed endpoints
     # Pass if all endpoints are found
     if len(fails) == 0:
-        print(f'FAILS: {fails}')
+        logging.info(f'\n\nFAILS: {fails}\n\n')
         pass
     # If endpoints are missing, attempt to resolve
     elif len(fails) > 0:
@@ -66,7 +67,7 @@ def get_forecasts(default_credential, endpoints):
                 forecast = utils.GridData(location, location_details, endpoint, header)
                 data = forecast.get_forecast()
                 response = forecast.get_status()
-                print(f'RESOLVED -- LOCATION: {location}, RESPONSE: {response}')
+                logging.info(f'\n\nRESOLVED -- LOCATION: {location}, RESPONSE: {response}\n\n')
                 if response == (200, False):
                     resolved[location] = location   # Remove location from list of failed endpoints
                     utils.writeblob(blob_name, data, container_name, account_url, default_credential)
@@ -78,7 +79,7 @@ def get_forecasts(default_credential, endpoints):
                 forecast = utils.GridData(location, location_details, endpoint, header)
                 data = forecast.get_forecast()
                 response = forecast.get_status()
-                print(f'RESOLVED -- LOCATION: {location}, RESPONSE: {response}')
+                logging.info(f'\n\nRESOLVED -- LOCATION: {location}, RESPONSE: {response}\n\n')
                 if response == (200, False):
                     resolved[location] = location   # Remove location from list of failed endpoints
                     utils.writeblob(blob_name, data, container_name, account_url, default_credential)
@@ -89,7 +90,7 @@ def get_forecasts(default_credential, endpoints):
                 forecast = utils.GridData(location, location_details, endpoint, header)
                 data = forecast.get_forecast()
                 response = forecast.get_status()
-                print(f'RESOLVED -- LOCATION: {location}, RESPONSE: {response}')
+                logging.info(f'\n\nRESOLVED -- LOCATION: {location}, RESPONSE: {response}\n\n')
                 if response == (200, False):
                     resolved[location] = location   # Remove location from list of failed endpoints
                     utils.writeblob(blob_name, data, container_name, account_url, default_credential)
@@ -111,6 +112,6 @@ def get_forecasts(default_credential, endpoints):
             for key in (resolved.keys() - fails.keys()):
                 if key in fails.keys():
                     del fails[key] 
-            print(f'UNRESOLVED FAILS: {fails}')
+            logging.info(f'\n\nUNRESOLVED FAILS: {fails}\n\n')
 
     return forecast_blobs
