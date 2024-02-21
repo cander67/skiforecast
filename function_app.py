@@ -3,7 +3,8 @@ import azure.functions as func
 app = func.FunctionApp()
 
 @app.function_name(name = "skiForecastTimer")
-@app.schedule(schedule="0 8 13 * * *", arg_name="skiForecastTimer", run_on_startup=False, use_monitor=False) 
+@app.schedule(schedule="0 */2 * * * *", arg_name="skiForecastTimer", run_on_startup=False, use_monitor=False)
+#@app.schedule(schedule="0 8 13 * * *", arg_name="skiForecastTimer", run_on_startup=False, use_monitor=False) 
 def cron(skiForecastTimer: func.TimerRequest) -> None:
     import os
     import json
