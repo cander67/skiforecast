@@ -9,6 +9,7 @@ def cron(skiForecastTimer: func.TimerRequest) -> None:
     import os
     import json
     from datetime import datetime
+    import pytz
     import bs4 as BeautifulSoup
     from dotenv import load_dotenv
     import utils as utils
