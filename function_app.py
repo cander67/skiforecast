@@ -28,7 +28,6 @@ def cron(skiForecastTimer: func.TimerRequest) -> None:
     load_dotenv()
 
     # Define parameters
-    locations = json.loads(os.getenv("LOCATIONS"))
     func_account_url = os.getenv("BLOB_ACCOUNT_URL")
     default_credential = DefaultAzureCredential()
     endpoints_file = "noaa_api_endpoints.json"
