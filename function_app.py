@@ -21,6 +21,7 @@ def cron(skiForecastTimer: func.TimerRequest) -> None:
     
     # Get current time
     now = datetime.now(pytz.UTC)
+    local_time = now.astimezone(pytz.timezone('US/Pacific'))
     logging.info(f'\n\nPython timer trigger function ran at {now}\n\n')
 
     # Load environment variables
@@ -135,7 +136,7 @@ def cron(skiForecastTimer: func.TimerRequest) -> None:
 
     # End the HTML output
     html += "</table>"
-    html += f"<h3>Updated: {now.strftime('%Y-%m-%d %H:%M')}</h3>\n"
+    html += f"<h3>Updated: {local_time.strftime('%Y-%m-%d %H:%M')}</h3>\n"
     html += '<section id="notes">\n<h3>NOTES</h3>\n'
     html += "<dl>\n<dt>- Data compiled from <a href='https://www.noaa.gov/'>NOAA</a> and scored according to subjective criteria for what makes a great ski day</dt>\n"
     html += '<dt>- Hover over table cells for more data</dt>\n'
