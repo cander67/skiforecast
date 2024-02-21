@@ -3,6 +3,17 @@ import json
 from datetime import datetime
 import pytz
 
-current_time = datetime.now(pytz.UTC)
+now = datetime.now()
 
-print(current_time)
+utc_time = datetime.now(pytz.UTC)
+local_time = utc_time.astimezone(pytz.timezone('US/Pacific'))
+
+print(utc_time)
+print(utc_time.strftime('%Y-%m-%d %H:%M'))
+
+print(now)
+print(now.strftime('%Y-%m-%d %H:%M'))
+
+
+print(local_time)
+print(local_time.strftime('%Y-%m-%d %H:%M'))
