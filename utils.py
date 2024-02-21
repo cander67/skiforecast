@@ -69,7 +69,14 @@ def assign_time_groups(current_time, dt):
     Returns:
         time_group (str): Time group.
     '''
-    ref_dt = datetime.strptime(f'{current_time.date()}T06:00:00', '%Y-%m-%dT%H:%M:%S')
+    # Convert current_time and dt to Pacific Time
+    #dt.replace(tzinfo=pytz.UTC)
+    pacific = pytz.timezone('US/Pacific')
+    current_time = current_time.astimezone(pacific)
+    #dt = dt.astimezone(pacific)
+
+    #ref_dt = datetime.strptime(f'{current_time.date()}T06:00:00', '%Y-%m-%dT%H:%M:%S')
+    ref_dt = datetime.strptime(f'{current_time.date()}T06:00:00-08:00', '%Y-%m-%dT%H:%M:%S%z')
     delta = dt - ref_dt
     
     if dt.day == ref_dt.day and dt.hour >= 6:
@@ -852,8 +859,10 @@ class TableData:
             values = []        # list of time:value pairs assigned to a time group
             for _ in times_values:
                 valid_time = _['validTime']
-                valid_time = re.sub(r"\+00:00/[a-zA-Z0-9]+", '', valid_time)
-                dt = datetime.strptime(valid_time, '%Y-%m-%dT%H:%M:%S')
+                #valid_time = re.sub(r"\+00:00/[a-zA-Z0-9]+", '', valid_time)
+                valid_time = re.sub(r"/[a-zA-Z0-9]+", '', valid_time)
+                dt = datetime.strptime(valid_time, '%Y-%m-%dT%H:%M:%S%z')
+                dt = dt.astimezone(pytz.timezone('US/Pacific'))
                 dt_str = dt.strftime('%Y-%m-%dT%H:%M:%S')
                 value = _['value']
 

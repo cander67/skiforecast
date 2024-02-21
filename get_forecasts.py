@@ -23,7 +23,6 @@ def get_forecasts(default_credential, endpoints):
 
     # Define parameters
     func_account_url = os.getenv('BLOB_ACCOUNT_URL')
-    #default_credential = DefaultAzureCredential()
     container_name = "skiforecast"
 
     # Fetch forecast data

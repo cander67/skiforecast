@@ -20,7 +20,6 @@ def proc_forecasts(default_credential, time, forecasts):
     time_periods = json.loads(os.getenv("TIME_PERIODS"))
     properties = json.loads(os.getenv("PROPERTIES"))
     func_account_url = os.getenv("BLOB_ACCOUNT_URL")
-    #default_credential = DefaultAzureCredential()
     container_name = "skiforecast"
     
     # Create table data from forecast data

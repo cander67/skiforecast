@@ -35,7 +35,7 @@ def cron(skiForecastTimer: func.TimerRequest) -> None:
     container_name = "skiforecast"
     my_content_setting = ContentSettings(content_type = 'application/octet-stream')
 
-    # Enumerate container contents
+    # Enumerate container contents, check for endpoints file
     try:
         endpoints = False
         container = ContainerClient(account_url=func_account_url, container_name=container_name, credential=default_credential)
@@ -47,7 +47,7 @@ def cron(skiForecastTimer: func.TimerRequest) -> None:
         logging.info(f'\n\nError checking container contents: {e}\n\n')
     logging.info(f'\n\nENDPOINTS STATUS: {endpoints}\n\n')
 
-    ## Check for endpoints file in blob storage, get endpoints or create endpoints cache if not exists
+    ## Get endpoints or create endpoints cache if not exists
     try:
         if endpoints == True:
             blob = utils.readblob(endpoints_file, container_name, func_account_url, default_credential)
