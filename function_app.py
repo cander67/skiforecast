@@ -20,7 +20,7 @@ def cron(skiForecastTimer: func.TimerRequest) -> None:
     from azure.storage.blob import BlobServiceClient, ContainerClient, ContentSettings
     
     # Get current time
-    now = datetime.now()
+    now = datetime.now(pytz.UTC)
     logging.info(f'\n\nPython timer trigger function ran at {now}\n\n')
 
     # Load environment variables
