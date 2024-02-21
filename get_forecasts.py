@@ -22,7 +22,7 @@ def get_forecasts(default_credential, endpoints):
     header = {'User-Agent' : (f'{PURPOSE}, {EMAIL}')}
 
     # Define parameters
-    account_url = os.getenv('BLOB_ACCOUNT_URL')
+    func_account_url = os.getenv('BLOB_ACCOUNT_URL')
     #default_credential = DefaultAzureCredential()
     container_name = "skiforecast"
 
@@ -40,7 +40,7 @@ def get_forecasts(default_credential, endpoints):
         data = forecast.get_forecast()
         response = forecast.get_status()
         if response[1] == False:
-            utils.writeblob(blob_name, data, container_name, account_url, default_credential)
+            utils.writeblob(blob_name, data, container_name, func_account_url, default_credential)
             forecast_blobs[location] = f'{location}_gridData.json'
         elif response[1] == True:
             fails[location] = response
@@ -70,7 +70,7 @@ def get_forecasts(default_credential, endpoints):
                 logging.info(f'\n\nRESOLVED -- LOCATION: {location}, RESPONSE: {response}\n\n')
                 if response == (200, False):
                     resolved[location] = location   # Remove location from list of failed endpoints
-                    utils.writeblob(blob_name, data, container_name, account_url, default_credential)
+                    utils.writeblob(blob_name, data, container_name, func_account_url, default_credential)
                     forecast_blobs[location] = f'{location}_gridData.json'
                 elif response[1] == True:
                     fails[location] = response      # Update fails list with new response
@@ -82,7 +82,7 @@ def get_forecasts(default_credential, endpoints):
                 logging.info(f'\n\nRESOLVED -- LOCATION: {location}, RESPONSE: {response}\n\n')
                 if response == (200, False):
                     resolved[location] = location   # Remove location from list of failed endpoints
-                    utils.writeblob(blob_name, data, container_name, account_url, default_credential)
+                    utils.writeblob(blob_name, data, container_name, func_account_url, default_credential)
                     forecast_blobs[location] = f'{location}_gridData.json'
                 elif response[1] == True:
                     fails[location] = response      # Update fails list with new response
@@ -93,7 +93,7 @@ def get_forecasts(default_credential, endpoints):
                 logging.info(f'\n\nRESOLVED -- LOCATION: {location}, RESPONSE: {response}\n\n')
                 if response == (200, False):
                     resolved[location] = location   # Remove location from list of failed endpoints
-                    utils.writeblob(blob_name, data, container_name, account_url, default_credential)
+                    utils.writeblob(blob_name, data, container_name, func_account_url, default_credential)
                     forecast_blobs[location] = f'{location}_gridData.json'
                 elif response[1] == True:
                     fails[location] = response      # Update fails list with new response

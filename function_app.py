@@ -27,7 +27,7 @@ def cron(skiForecastTimer: func.TimerRequest) -> None:
 
     # Define parameters
     locations = json.loads(os.getenv("LOCATIONS"))
-    account_url = os.getenv("BLOB_ACCOUNT_URL")
+    func_account_url = os.getenv("BLOB_ACCOUNT_URL")
     default_credential = DefaultAzureCredential()
     endpoints_file = "noaa_api_endpoints.json"
     container_name = "skiforecast"
@@ -36,7 +36,7 @@ def cron(skiForecastTimer: func.TimerRequest) -> None:
     # Enumerate container contents
     try:
         endpoints = False
-        container = ContainerClient(account_url=account_url, container_name=container_name, credential=default_credential)
+        container = ContainerClient(account_url=func_account_url, container_name=container_name, credential=default_credential)
         blob_list = container.list_blobs()
         for blob in blob_list:    
             if blob.name == endpoints_file:
@@ -51,13 +51,13 @@ def cron(skiForecastTimer: func.TimerRequest) -> None:
     try:
         #if endpoints_file in [blob.name for blob in blob_list]:
         if endpoints == True:
-            blob = utils.readblob(endpoints_file, container_name, account_url, default_credential)
+            blob = utils.readblob(endpoints_file, container_name, func_account_url, default_credential)
             endpoints = json.loads(blob.decode())
         elif endpoints == False:
             ep = get_endpoints.get_endpoints()
             blob_input = json.dumps(ep, sort_keys=False, indent=4)
-            utils.writeblob(endpoints_file, blob_input, container_name, account_url, default_credential)
-            blob = utils.readblob(endpoints_file, container_name, account_url, default_credential)
+            utils.writeblob(endpoints_file, blob_input, container_name, func_account_url, default_credential)
+            blob = utils.readblob(endpoints_file, container_name, func_account_url, default_credential)
             endpoints = json.loads(blob.decode())
 
         logging.info(f'\n\nENDPOINTS: {endpoints}\n\n')
@@ -82,7 +82,7 @@ def cron(skiForecastTimer: func.TimerRequest) -> None:
     # Write table to blob
     try:
         #table_out = json.dumps(table, sort_keys=False, indent=4)
-        utils.writeblob("tableData.json", json.dumps(table, sort_keys=False, indent=4), container_name, account_url, default_credential)
+        utils.writeblob("tableData.json", json.dumps(table, sort_keys=False, indent=4), container_name, func_account_url, default_credential)
     except Exception as e:
         logging.info(f'\n\nError writing table to blob: {e}\n\n')
 
@@ -174,7 +174,7 @@ def cron(skiForecastTimer: func.TimerRequest) -> None:
     try:
         #utils.writeblob(html_file, pretty_html, web_container, account_url, default_credential)
         # Create a blob service client
-        blob_service_client = BlobServiceClient(account_url=account_url, credential=default_credential)
+        blob_service_client = BlobServiceClient(account_url=func_account_url, credential=default_credential)
         blob_client = blob_service_client.get_blob_client(container=web_container, blob=html_file)
         blob_client.upload_blob(pretty_html, overwrite=True, content_settings=my_content_setting)
     except Exception as e:

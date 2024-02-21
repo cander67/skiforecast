@@ -6,7 +6,7 @@ from datetime import datetime, timedelta
 from azure.storage.blob import BlobServiceClient
 import logging
 
-def writeblob(blob_name, blob_input, container_name, account_url, default_credential):
+def writeblob(blob_name, blob_input, container_name, func_account_url, default_credential):
     '''Write blob to Azure Storage
     Args:
         blob_name (str) : name of blob to write
@@ -19,7 +19,7 @@ def writeblob(blob_name, blob_input, container_name, account_url, default_creden
     '''
     try:
         # Create a blob service client
-        blob_service_client = BlobServiceClient(account_url=account_url, credential=default_credential)
+        blob_service_client = BlobServiceClient(account_url=func_account_url, credential=default_credential)
 
         # Create blob client using local file name as blob name
         blob_client = blob_service_client.get_blob_client(container=container_name, blob=blob_name)
@@ -32,7 +32,7 @@ def writeblob(blob_name, blob_input, container_name, account_url, default_creden
 
     return None
 
-def readblob(blob_name, container_name, account_url, default_credential):
+def readblob(blob_name, container_name, func_account_url, default_credential):
     '''Read blob from Azure Storage
     Args:
         blob_name (str) : name of blob to read
@@ -44,7 +44,7 @@ def readblob(blob_name, container_name, account_url, default_credential):
     '''
     try:
         # Create a blob service client
-        blob_service_client = BlobServiceClient(account_url=account_url, credential=default_credential)
+        blob_service_client = BlobServiceClient(account_url=func_account_url, credential=default_credential)
 
         # Create blob client with blob name
         blob_client = blob_service_client.get_blob_client(container=container_name, blob=blob_name)

@@ -19,7 +19,7 @@ def proc_forecasts(default_credential, time, forecasts):
     locations = json.loads(os.getenv("LOCATIONS"))
     time_periods = json.loads(os.getenv("TIME_PERIODS"))
     properties = json.loads(os.getenv("PROPERTIES"))
-    account_url = os.getenv("BLOB_ACCOUNT_URL")
+    func_account_url = os.getenv("BLOB_ACCOUNT_URL")
     #default_credential = DefaultAzureCredential()
     container_name = "skiforecast"
     
@@ -31,7 +31,7 @@ def proc_forecasts(default_credential, time, forecasts):
 
     for location in locations.keys():
         try:
-            blob_data = utils.readblob(forecasts[location], container_name, account_url, default_credential)
+            blob_data = utils.readblob(forecasts[location], container_name, func_account_url, default_credential)
             blob_data = json.loads(blob_data.decode())
         except Exception as e:
             logging.info(f'\n\nError reading forecast, {location}: {e}\n\n')
