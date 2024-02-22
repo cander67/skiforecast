@@ -3,24 +3,46 @@
 import os
 import json
 from datetime import datetime
-#import bs4 as BeautifulSoup
-from dotenv import load_dotenv
-#from azure.identity import DefaultAzureCredential
-#from azure.storage.blob import BlobServiceClient, ContainerClient, ContentSettings
+import pytz
 import utils as utils
-#import src.get_endpoints as get_endpoints
-#import src.get_forecasts as get_forecasts
-#import src.proc_forecasts as proc_forecasts
 
-time = datetime.now()
-
-# Load environment variables
-load_dotenv()
+now = datetime.now(pytz.UTC)
+local_time = now.astimezone(pytz.timezone('US/Pacific'))
 
 # Define parameters
-locations = json.loads(os.getenv("LOCATIONS"))
-time_periods = json.loads(os.getenv("TIME_PERIODS"))
-properties = json.loads(os.getenv("PROPERTIES"))
+locations = LOCATIONS = {
+    "Mt. Baker": [[48.8618, -121.6789], [3500, 5000], ["https://www.mtbaker.us/snow-report/"]], 
+    "Loup Loup": [[48.3940, -119.9111], [4020, 5260], ["https://skitheloup.org/mountain/conditions-weather/"]], 
+    "Stevens Pass": [[47.7439, -121.0908], [4061, 5845], ["https://www.stevenspass.com/the-mountain/mountain-conditions/weather-report.aspx"]], 
+    "Snoqualmie Pass": [[47.4238, -121.4132], [3140, 5420], ["https://summitatsnoqualmie.com/conditions"]], 
+    "Mission Ridge": [[47.2920, -120.3991], [4570, 6820], ["https://www.missionridge.com/mountain-report/"]], 
+    "White Pass": [[46.6371, -121.3915], [4500, 6500], ["https://skiwhitepass.com/the-mountain/snow-report"]], 
+    "Crystal Mountain": [[46.4350, -121.4751], [4600, 7002], ["https://www.crystalmountainresort.com/the-mountain/mountain-report-and-webcams#/"]]
+    }
+
+time_periods = TIME_PERIODS = {
+    "day0": ["24h", "am", "pm", "overnight"], 
+    "day1": ["24h", "am", "pm", "overnight"], 
+    "day2": ["24h", "am", "pm", "overnight"], 
+    "day3": ["24h"], 
+    "day4": ["24h"], 
+    "day5": ["24h"], 
+    "day6": ["24h"]
+    }
+
+properties = {
+    "temperature": {"units": "degF", "calculations": ["max", "min", "avg"]}, 
+    "skyCover": {"units": "condition", "calculations": ["avg"]}, 
+    "windDirection": {"units": "cardinal", "calculations": ["avg"]}, 
+    "windSpeed": {"units": "mph", "calculations": ["avg"]}, 
+    "windGust": {"units": "mph", "calculations": ["max"]}, 
+    "weather": {"units": "text", "calculations": ["extr_str"]}, 
+    "probabilityOfPrecipitation": {"units": "percent", "calculations": ["avg"]}, 
+    "quantitativePrecipitation": {"units": "in", "calculations": ["sum"]}, 
+    "snowfallAmount": {"units": "in", "calculations": ["sum"]}, 
+    "snowLevel": {"units": "ft", "calculations": ["min", "max"]}
+    }
+
 
 path = 'test/'
 
@@ -40,7 +62,7 @@ with open(f'{path}{files["Loup Loup"]}', 'r') as f:
 f.close()
 
 # Instantiate TableData object
-setup = utils.TableData(time, "Loup Loup", time_periods, properties)
+setup = utils.TableData(now, "Loup Loup", time_periods, properties)
 
 # Parse forecast data
 try:
