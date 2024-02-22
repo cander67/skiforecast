@@ -1,0 +1,1785 @@
+{
+    "Loup Loup": {
+        "lat_long": [
+            48.394,
+            -119.9111
+        ],
+        "elev": [
+            4020,
+            5260
+        ],
+        "href": [
+            "https://skitheloup.org/mountain/conditions-weather/"
+        ],
+        "predictions": {
+            "day0": {
+                "date": [
+                    "2024-02-22",
+                    "Thursday"
+                ],
+                "time_period": {
+                    "24h": {
+                        "status": {
+                            "temperature": 1,
+                            "skyCover": 3,
+                            "windDirection": 3,
+                            "windSpeed": 3,
+                            "windGust": 3,
+                            "weather": 3,
+                            "probabilityOfPrecipitation": 3,
+                            "quantitativePrecipitation": 3,
+                            "snowfallAmount": 2,
+                            "snowLevel": 2,
+                            "overall": 1
+                        },
+                        "data": {
+                            "temperature": {
+                                "units": "degF",
+                                "data": {
+                                    "max": [
+                                        "2024-02-22T13:00:00",
+                                        39.0
+                                    ],
+                                    "min": [
+                                        "2024-02-23T04:00:00",
+                                        25.0
+                                    ],
+                                    "avg": 31.52941176470588
+                                }
+                            },
+                            "skyCover": {
+                                "units": "condition",
+                                "data": {
+                                    "avg": "Partly Cloudy"
+                                }
+                            },
+                            "windDirection": {
+                                "units": "cardinal",
+                                "data": {
+                                    "avg": "W"
+                                }
+                            },
+                            "windSpeed": {
+                                "units": "mph",
+                                "data": {
+                                    "avg": 3.452337276
+                                }
+                            },
+                            "windGust": {
+                                "units": "mph",
+                                "data": {
+                                    "max": [
+                                        "2024-02-22T20:00:00",
+                                        5.75389546
+                                    ]
+                                }
+                            },
+                            "weather": {
+                                "units": "text",
+                                "data": [
+                                    [
+                                        "2024-02-22T16:00:00",
+                                        [
+                                            [
+                                                "rain_showers",
+                                                "light",
+                                                "slight_chance"
+                                            ],
+                                            [
+                                                "snow_showers",
+                                                "light",
+                                                "slight_chance"
+                                            ]
+                                        ]
+                                    ],
+                                    [
+                                        "2024-02-22T17:00:00",
+                                        [
+                                            [
+                                                "rain_showers",
+                                                "light",
+                                                "slight_chance"
+                                            ]
+                                        ]
+                                    ],
+                                    [
+                                        "2024-02-22T18:00:00",
+                                        [
+                                            [
+                                                "rain_showers",
+                                                "light",
+                                                "slight_chance"
+                                            ],
+                                            [
+                                                "snow_showers",
+                                                "light",
+                                                "slight_chance"
+                                            ]
+                                        ]
+                                    ],
+                                    [
+                                        "2024-02-22T19:00:00",
+                                        [
+                                            [
+                                                null,
+                                                null,
+                                                null
+                                            ]
+                                        ]
+                                    ]
+                                ]
+                            },
+                            "probabilityOfPrecipitation": {
+                                "units": "percent",
+                                "data": {
+                                    "avg": 4.25
+                                }
+                            },
+                            "quantitativePrecipitation": {
+                                "units": "in",
+                                "data": {
+                                    "sum": 0.0100000054
+                                }
+                            },
+                            "snowfallAmount": {
+                                "units": "in",
+                                "data": {
+                                    "sum": 0.0
+                                }
+                            },
+                            "snowLevel": {
+                                "units": "ft",
+                                "data": {
+                                    "min": [
+                                        "2024-02-23T05:00:00",
+                                        2836.000090752
+                                    ],
+                                    "max": [
+                                        "2024-02-22T16:00:00",
+                                        4121.000131872
+                                    ]
+                                }
+                            }
+                        }
+                    },
+                    "am": {
+                        "status": {
+                            "temperature": 1,
+                            "skyCover": 3,
+                            "windDirection": 3,
+                            "windSpeed": 3,
+                            "windGust": 3,
+                            "weather": 3,
+                            "probabilityOfPrecipitation": 3,
+                            "quantitativePrecipitation": 3,
+                            "snowfallAmount": 2,
+                            "snowLevel": 3,
+                            "overall": 1
+                        },
+                        "data": {
+                            "temperature": {
+                                "units": "degF",
+                                "data": {
+                                    "max": [
+                                        "2024-02-22T11:00:00",
+                                        37.0
+                                    ],
+                                    "min": [
+                                        "2024-02-22T06:00:00",
+                                        27.0
+                                    ],
+                                    "avg": 31.5
+                                }
+                            },
+                            "skyCover": {
+                                "units": "condition",
+                                "data": {
+                                    "avg": 50.666666666666664
+                                }
+                            },
+                            "windDirection": {
+                                "units": "cardinal",
+                                "data": {
+                                    "avg": "W"
+                                }
+                            },
+                            "windSpeed": {
+                                "units": "mph",
+                                "data": {
+                                    "avg": 2.87694773
+                                }
+                            },
+                            "windGust": {
+                                "units": "mph",
+                                "data": {
+                                    "max": [
+                                        "2024-02-22T09:00:00",
+                                        4.603116368
+                                    ]
+                                }
+                            },
+                            "weather": {
+                                "units": "text",
+                                "data": []
+                            },
+                            "probabilityOfPrecipitation": {
+                                "units": "percent",
+                                "data": {
+                                    "avg": 0.5
+                                }
+                            },
+                            "quantitativePrecipitation": {
+                                "units": "in",
+                                "data": {
+                                    "sum": 0.0
+                                }
+                            },
+                            "snowfallAmount": {
+                                "units": "in",
+                                "data": {
+                                    "sum": 0.0
+                                }
+                            },
+                            "snowLevel": {
+                                "units": "ft",
+                                "data": {
+                                    "min": [
+                                        "2024-02-22T08:00:00",
+                                        3412.000109184
+                                    ],
+                                    "max": [
+                                        "2024-02-22T11:00:00",
+                                        3806.000121792
+                                    ]
+                                }
+                            }
+                        }
+                    },
+                    "pm": {
+                        "status": {
+                            "temperature": 1,
+                            "skyCover": 3,
+                            "windDirection": 3,
+                            "windSpeed": 3,
+                            "weather": 3,
+                            "probabilityOfPrecipitation": 3,
+                            "quantitativePrecipitation": 3,
+                            "snowfallAmount": 2,
+                            "snowLevel": 2,
+                            "overall": 1
+                        },
+                        "data": {
+                            "temperature": {
+                                "units": "degF",
+                                "data": {
+                                    "max": [
+                                        "2024-02-22T13:00:00",
+                                        39.0
+                                    ],
+                                    "min": [
+                                        "2024-02-22T17:00:00",
+                                        35.0
+                                    ],
+                                    "avg": 37.25
+                                }
+                            },
+                            "skyCover": {
+                                "units": "condition",
+                                "data": {
+                                    "avg": "Partly Cloudy"
+                                }
+                            },
+                            "windDirection": {
+                                "units": "cardinal",
+                                "data": {
+                                    "avg": "SW"
+                                }
+                            },
+                            "windSpeed": {
+                                "units": "mph",
+                                "data": {
+                                    "avg": 4.027726822
+                                }
+                            },
+                            "windGust": {
+                                "units": "mph",
+                                "data": {}
+                            },
+                            "weather": {
+                                "units": "text",
+                                "data": [
+                                    [
+                                        "2024-02-22T16:00:00",
+                                        [
+                                            [
+                                                "rain_showers",
+                                                "light",
+                                                "slight_chance"
+                                            ],
+                                            [
+                                                "snow_showers",
+                                                "light",
+                                                "slight_chance"
+                                            ]
+                                        ]
+                                    ],
+                                    [
+                                        "2024-02-22T17:00:00",
+                                        [
+                                            [
+                                                "rain_showers",
+                                                "light",
+                                                "slight_chance"
+                                            ]
+                                        ]
+                                    ]
+                                ]
+                            },
+                            "probabilityOfPrecipitation": {
+                                "units": "percent",
+                                "data": {
+                                    "avg": 15.0
+                                }
+                            },
+                            "quantitativePrecipitation": {
+                                "units": "in",
+                                "data": {
+                                    "sum": 0.0100000054
+                                }
+                            },
+                            "snowfallAmount": {
+                                "units": "in",
+                                "data": {
+                                    "sum": 0.0
+                                }
+                            },
+                            "snowLevel": {
+                                "units": "ft",
+                                "data": {
+                                    "min": [
+                                        "2024-02-22T12:00:00",
+                                        3938.000126016
+                                    ],
+                                    "max": [
+                                        "2024-02-22T16:00:00",
+                                        4121.000131872
+                                    ]
+                                }
+                            }
+                        }
+                    },
+                    "overnight": {
+                        "status": {
+                            "temperature": 2,
+                            "skyCover": 3,
+                            "windDirection": 3,
+                            "windGust": 3,
+                            "weather": 3,
+                            "probabilityOfPrecipitation": 3,
+                            "quantitativePrecipitation": 3,
+                            "snowfallAmount": 2,
+                            "snowLevel": 3,
+                            "overall": 2
+                        },
+                        "data": {
+                            "temperature": {
+                                "units": "degF",
+                                "data": {
+                                    "max": [
+                                        "2024-02-22T18:00:00",
+                                        33.0
+                                    ],
+                                    "min": [
+                                        "2024-02-23T04:00:00",
+                                        25.0
+                                    ],
+                                    "avg": 28.285714285714285
+                                }
+                            },
+                            "skyCover": {
+                                "units": "condition",
+                                "data": {
+                                    "avg": "Mostly Clear"
+                                }
+                            },
+                            "windDirection": {
+                                "units": "cardinal",
+                                "data": {
+                                    "avg": "NW"
+                                }
+                            },
+                            "windSpeed": {
+                                "units": "mph",
+                                "data": {}
+                            },
+                            "windGust": {
+                                "units": "mph",
+                                "data": {
+                                    "max": [
+                                        "2024-02-22T20:00:00",
+                                        5.75389546
+                                    ]
+                                }
+                            },
+                            "weather": {
+                                "units": "text",
+                                "data": [
+                                    [
+                                        "2024-02-22T18:00:00",
+                                        [
+                                            [
+                                                "rain_showers",
+                                                "light",
+                                                "slight_chance"
+                                            ],
+                                            [
+                                                "snow_showers",
+                                                "light",
+                                                "slight_chance"
+                                            ]
+                                        ]
+                                    ],
+                                    [
+                                        "2024-02-22T19:00:00",
+                                        [
+                                            [
+                                                null,
+                                                null,
+                                                null
+                                            ]
+                                        ]
+                                    ]
+                                ]
+                            },
+                            "probabilityOfPrecipitation": {
+                                "units": "percent",
+                                "data": {
+                                    "avg": 1.0
+                                }
+                            },
+                            "quantitativePrecipitation": {
+                                "units": "in",
+                                "data": {
+                                    "sum": 0.0
+                                }
+                            },
+                            "snowfallAmount": {
+                                "units": "in",
+                                "data": {
+                                    "sum": 0.0
+                                }
+                            },
+                            "snowLevel": {
+                                "units": "ft",
+                                "data": {
+                                    "min": [
+                                        "2024-02-23T05:00:00",
+                                        2836.000090752
+                                    ],
+                                    "max": [
+                                        "2024-02-22T18:00:00",
+                                        3964.000126848
+                                    ]
+                                }
+                            }
+                        }
+                    }
+                }
+            },
+            "day1": {
+                "date": [
+                    "2024-02-23",
+                    "Friday"
+                ],
+                "time_period": {
+                    "24h": {
+                        "status": {
+                            "temperature": 1,
+                            "skyCover": 3,
+                            "windDirection": 3,
+                            "windSpeed": 3,
+                            "windGust": 3,
+                            "weather": 3,
+                            "probabilityOfPrecipitation": 3,
+                            "quantitativePrecipitation": 3,
+                            "snowfallAmount": 2,
+                            "snowLevel": 3,
+                            "overall": 1
+                        },
+                        "data": {
+                            "temperature": {
+                                "units": "degF",
+                                "data": {
+                                    "max": [
+                                        "2024-02-23T13:00:00",
+                                        40.0
+                                    ],
+                                    "min": [
+                                        "2024-02-23T07:00:00",
+                                        24.0
+                                    ],
+                                    "avg": 32.294117647058826
+                                }
+                            },
+                            "skyCover": {
+                                "units": "condition",
+                                "data": {
+                                    "avg": "Partly Cloudy"
+                                }
+                            },
+                            "windDirection": {
+                                "units": "cardinal",
+                                "data": {
+                                    "avg": "W"
+                                }
+                            },
+                            "windSpeed": {
+                                "units": "mph",
+                                "data": {
+                                    "avg": 6.329285006
+                                }
+                            },
+                            "windGust": {
+                                "units": "mph",
+                                "data": {
+                                    "max": [
+                                        "2024-02-23T22:00:00",
+                                        12.658570012
+                                    ]
+                                }
+                            },
+                            "weather": {
+                                "units": "text",
+                                "data": [
+                                    [
+                                        "2024-02-23T06:00:00",
+                                        [
+                                            [
+                                                null,
+                                                null,
+                                                null
+                                            ]
+                                        ]
+                                    ]
+                                ]
+                            },
+                            "probabilityOfPrecipitation": {
+                                "units": "percent",
+                                "data": {
+                                    "avg": 3.25
+                                }
+                            },
+                            "quantitativePrecipitation": {
+                                "units": "in",
+                                "data": {
+                                    "sum": 0.0
+                                }
+                            },
+                            "snowfallAmount": {
+                                "units": "in",
+                                "data": {
+                                    "sum": 0.0
+                                }
+                            },
+                            "snowLevel": {
+                                "units": "ft",
+                                "data": {
+                                    "min": [
+                                        "2024-02-23T08:00:00",
+                                        2572.000082304
+                                    ],
+                                    "max": [
+                                        "2024-02-23T16:00:00",
+                                        3938.000126016
+                                    ]
+                                }
+                            }
+                        }
+                    },
+                    "am": {
+                        "status": {
+                            "temperature": 1,
+                            "skyCover": 3,
+                            "windDirection": 3,
+                            "windSpeed": 3,
+                            "windGust": 3,
+                            "weather": 3,
+                            "probabilityOfPrecipitation": 3,
+                            "quantitativePrecipitation": 3,
+                            "snowfallAmount": 2,
+                            "snowLevel": 3,
+                            "overall": 1
+                        },
+                        "data": {
+                            "temperature": {
+                                "units": "degF",
+                                "data": {
+                                    "max": [
+                                        "2024-02-23T11:00:00",
+                                        37.0
+                                    ],
+                                    "min": [
+                                        "2024-02-23T07:00:00",
+                                        24.0
+                                    ],
+                                    "avg": 30.6
+                                }
+                            },
+                            "skyCover": {
+                                "units": "condition",
+                                "data": {
+                                    "avg": "Mostly Clear"
+                                }
+                            },
+                            "windDirection": {
+                                "units": "cardinal",
+                                "data": {
+                                    "avg": "WNW"
+                                }
+                            },
+                            "windSpeed": {
+                                "units": "mph",
+                                "data": {
+                                    "avg": 5.178505914
+                                }
+                            },
+                            "windGust": {
+                                "units": "mph",
+                                "data": {
+                                    "max": [
+                                        "2024-02-23T10:00:00",
+                                        6.904674552
+                                    ]
+                                }
+                            },
+                            "weather": {
+                                "units": "text",
+                                "data": [
+                                    [
+                                        "2024-02-23T06:00:00",
+                                        [
+                                            [
+                                                null,
+                                                null,
+                                                null
+                                            ]
+                                        ]
+                                    ]
+                                ]
+                            },
+                            "probabilityOfPrecipitation": {
+                                "units": "percent",
+                                "data": {
+                                    "avg": 2.0
+                                }
+                            },
+                            "quantitativePrecipitation": {
+                                "units": "in",
+                                "data": {
+                                    "sum": 0.0
+                                }
+                            },
+                            "snowfallAmount": {
+                                "units": "in",
+                                "data": {
+                                    "sum": 0.0
+                                }
+                            },
+                            "snowLevel": {
+                                "units": "ft",
+                                "data": {
+                                    "min": [
+                                        "2024-02-23T08:00:00",
+                                        2572.000082304
+                                    ],
+                                    "max": [
+                                        "2024-02-23T10:00:00",
+                                        2836.000090752
+                                    ]
+                                }
+                            }
+                        }
+                    },
+                    "pm": {
+                        "status": {
+                            "temperature": 1,
+                            "skyCover": 3,
+                            "windDirection": 3,
+                            "windSpeed": 3,
+                            "windGust": 3,
+                            "weather": 3,
+                            "probabilityOfPrecipitation": 3,
+                            "quantitativePrecipitation": 3,
+                            "snowfallAmount": 2,
+                            "snowLevel": 3,
+                            "overall": 1
+                        },
+                        "data": {
+                            "temperature": {
+                                "units": "degF",
+                                "data": {
+                                    "max": [
+                                        "2024-02-23T13:00:00",
+                                        40.0
+                                    ],
+                                    "min": [
+                                        "2024-02-23T17:00:00",
+                                        36.0
+                                    ],
+                                    "avg": 38.4
+                                }
+                            },
+                            "skyCover": {
+                                "units": "condition",
+                                "data": {
+                                    "avg": "Mostly Clear"
+                                }
+                            },
+                            "windDirection": {
+                                "units": "cardinal",
+                                "data": {
+                                    "avg": "WSW"
+                                }
+                            },
+                            "windSpeed": {
+                                "units": "mph",
+                                "data": {
+                                    "avg": 8.055453644
+                                }
+                            },
+                            "windGust": {
+                                "units": "mph",
+                                "data": {
+                                    "max": [
+                                        "2024-02-23T16:00:00",
+                                        11.50779092
+                                    ]
+                                }
+                            },
+                            "weather": {
+                                "units": "text",
+                                "data": []
+                            },
+                            "probabilityOfPrecipitation": {
+                                "units": "percent",
+                                "data": {
+                                    "avg": 4.0
+                                }
+                            },
+                            "quantitativePrecipitation": {
+                                "units": "in",
+                                "data": {
+                                    "sum": 0.0
+                                }
+                            },
+                            "snowfallAmount": {
+                                "units": "in",
+                                "data": {
+                                    "sum": 0.0
+                                }
+                            },
+                            "snowLevel": {
+                                "units": "ft",
+                                "data": {
+                                    "min": [
+                                        "2024-02-23T13:00:00",
+                                        3465.00011088
+                                    ],
+                                    "max": [
+                                        "2024-02-23T16:00:00",
+                                        3938.000126016
+                                    ]
+                                }
+                            }
+                        }
+                    },
+                    "overnight": {
+                        "status": {
+                            "temperature": 2,
+                            "skyCover": 3,
+                            "windDirection": 3,
+                            "windSpeed": 3,
+                            "windGust": 3,
+                            "weather": 3,
+                            "probabilityOfPrecipitation": 3,
+                            "quantitativePrecipitation": 3,
+                            "snowfallAmount": 2,
+                            "snowLevel": 3,
+                            "overall": 2
+                        },
+                        "data": {
+                            "temperature": {
+                                "units": "degF",
+                                "data": {
+                                    "max": [
+                                        "2024-02-23T18:00:00",
+                                        33.0
+                                    ],
+                                    "min": [
+                                        "2024-02-24T05:00:00",
+                                        26.0
+                                    ],
+                                    "avg": 29.142857142857142
+                                }
+                            },
+                            "skyCover": {
+                                "units": "condition",
+                                "data": {
+                                    "avg": "Mostly Cloudy"
+                                }
+                            },
+                            "windDirection": {
+                                "units": "cardinal",
+                                "data": {
+                                    "avg": "W"
+                                }
+                            },
+                            "windSpeed": {
+                                "units": "mph",
+                                "data": {
+                                    "avg": 6.904674552
+                                }
+                            },
+                            "windGust": {
+                                "units": "mph",
+                                "data": {
+                                    "max": [
+                                        "2024-02-23T22:00:00",
+                                        12.658570012
+                                    ]
+                                }
+                            },
+                            "weather": {
+                                "units": "text",
+                                "data": []
+                            },
+                            "probabilityOfPrecipitation": {
+                                "units": "percent",
+                                "data": {
+                                    "avg": 3.5
+                                }
+                            },
+                            "quantitativePrecipitation": {
+                                "units": "in",
+                                "data": {
+                                    "sum": 0.0
+                                }
+                            },
+                            "snowfallAmount": {
+                                "units": "in",
+                                "data": {
+                                    "sum": 0.0
+                                }
+                            },
+                            "snowLevel": {
+                                "units": "ft",
+                                "data": {
+                                    "min": [
+                                        "2024-02-24T04:00:00",
+                                        2888.000092416
+                                    ],
+                                    "max": [
+                                        "2024-02-23T19:00:00",
+                                        3596.000115072
+                                    ]
+                                }
+                            }
+                        }
+                    }
+                }
+            },
+            "day2": {
+                "date": [
+                    "2024-02-24",
+                    "Saturday"
+                ],
+                "time_period": {
+                    "24h": {
+                        "status": {
+                            "temperature": 1,
+                            "skyCover": 3,
+                            "windDirection": 3,
+                            "windSpeed": 3,
+                            "windGust": 3,
+                            "weather": 3,
+                            "probabilityOfPrecipitation": 3,
+                            "quantitativePrecipitation": 3,
+                            "snowfallAmount": 2,
+                            "snowLevel": 3,
+                            "overall": 1
+                        },
+                        "data": {
+                            "temperature": {
+                                "units": "degF",
+                                "data": {
+                                    "max": [
+                                        "2024-02-24T13:00:00",
+                                        41.0
+                                    ],
+                                    "min": [
+                                        "2024-02-24T07:00:00",
+                                        27.0
+                                    ],
+                                    "avg": 33.411764705882355
+                                }
+                            },
+                            "skyCover": {
+                                "units": "condition",
+                                "data": {
+                                    "avg": "Partly Cloudy"
+                                }
+                            },
+                            "windDirection": {
+                                "units": "cardinal",
+                                "data": {
+                                    "avg": "W"
+                                }
+                            },
+                            "windSpeed": {
+                                "units": "mph",
+                                "data": {
+                                    "avg": 8.976076917600002
+                                }
+                            },
+                            "windGust": {
+                                "units": "mph",
+                                "data": {
+                                    "max": [
+                                        "2024-02-24T16:00:00",
+                                        20.714023656
+                                    ]
+                                }
+                            },
+                            "weather": {
+                                "units": "text",
+                                "data": [
+                                    [
+                                        "2024-02-25T04:00:00",
+                                        [
+                                            [
+                                                "snow",
+                                                "light",
+                                                "slight_chance"
+                                            ]
+                                        ]
+                                    ]
+                                ]
+                            },
+                            "probabilityOfPrecipitation": {
+                                "units": "percent",
+                                "data": {
+                                    "avg": 12.666666666666666
+                                }
+                            },
+                            "quantitativePrecipitation": {
+                                "units": "in",
+                                "data": {
+                                    "sum": 0.0
+                                }
+                            },
+                            "snowfallAmount": {
+                                "units": "in",
+                                "data": {
+                                    "sum": 0.0
+                                }
+                            },
+                            "snowLevel": {
+                                "units": "ft",
+                                "data": {
+                                    "min": [
+                                        "2024-02-24T07:00:00",
+                                        2677.000085664
+                                    ],
+                                    "max": [
+                                        "2024-02-24T16:00:00",
+                                        3910.00012512
+                                    ]
+                                }
+                            }
+                        }
+                    },
+                    "am": {
+                        "status": {
+                            "temperature": 1,
+                            "skyCover": 3,
+                            "windDirection": 3,
+                            "windSpeed": 3,
+                            "windGust": 3,
+                            "weather": 3,
+                            "quantitativePrecipitation": 3,
+                            "snowfallAmount": 2,
+                            "snowLevel": 3,
+                            "overall": 1
+                        },
+                        "data": {
+                            "temperature": {
+                                "units": "degF",
+                                "data": {
+                                    "max": [
+                                        "2024-02-24T11:00:00",
+                                        38.0
+                                    ],
+                                    "min": [
+                                        "2024-02-24T07:00:00",
+                                        27.0
+                                    ],
+                                    "avg": 32.8
+                                }
+                            },
+                            "skyCover": {
+                                "units": "condition",
+                                "data": {
+                                    "avg": "Partly Cloudy"
+                                }
+                            },
+                            "windDirection": {
+                                "units": "cardinal",
+                                "data": {
+                                    "avg": "W"
+                                }
+                            },
+                            "windSpeed": {
+                                "units": "mph",
+                                "data": {
+                                    "avg": 6.329285006
+                                }
+                            },
+                            "windGust": {
+                                "units": "mph",
+                                "data": {
+                                    "max": [
+                                        "2024-02-24T10:00:00",
+                                        10.357011828
+                                    ]
+                                }
+                            },
+                            "weather": {
+                                "units": "text",
+                                "data": [
+                                    [
+                                        "2024-02-25T04:00:00",
+                                        [
+                                            [
+                                                "snow",
+                                                "light",
+                                                "slight_chance"
+                                            ]
+                                        ]
+                                    ]
+                                ]
+                            },
+                            "probabilityOfPrecipitation": {
+                                "units": "percent",
+                                "data": {}
+                            },
+                            "quantitativePrecipitation": {
+                                "units": "in",
+                                "data": {
+                                    "sum": 0.0
+                                }
+                            },
+                            "snowfallAmount": {
+                                "units": "in",
+                                "data": {
+                                    "sum": 0.0
+                                }
+                            },
+                            "snowLevel": {
+                                "units": "ft",
+                                "data": {
+                                    "min": [
+                                        "2024-02-24T07:00:00",
+                                        2677.000085664
+                                    ],
+                                    "max": [
+                                        "2024-02-24T10:00:00",
+                                        3228.000103296
+                                    ]
+                                }
+                            }
+                        }
+                    },
+                    "pm": {
+                        "status": {
+                            "temperature": 1,
+                            "skyCover": 3,
+                            "windDirection": 3,
+                            "windSpeed": 3,
+                            "windGust": 3,
+                            "weather": 3,
+                            "probabilityOfPrecipitation": 3,
+                            "quantitativePrecipitation": 3,
+                            "snowfallAmount": 2,
+                            "snowLevel": 3,
+                            "overall": 1
+                        },
+                        "data": {
+                            "temperature": {
+                                "units": "degF",
+                                "data": {
+                                    "max": [
+                                        "2024-02-24T13:00:00",
+                                        41.0
+                                    ],
+                                    "min": [
+                                        "2024-02-24T17:00:00",
+                                        38.0
+                                    ],
+                                    "avg": 39.75
+                                }
+                            },
+                            "skyCover": {
+                                "units": "condition",
+                                "data": {
+                                    "avg": "Partly Cloudy"
+                                }
+                            },
+                            "windDirection": {
+                                "units": "cardinal",
+                                "data": {
+                                    "avg": "WSW"
+                                }
+                            },
+                            "windSpeed": {
+                                "units": "mph",
+                                "data": {
+                                    "avg": 10.932401374000001
+                                }
+                            },
+                            "windGust": {
+                                "units": "mph",
+                                "data": {
+                                    "max": [
+                                        "2024-02-24T16:00:00",
+                                        20.714023656
+                                    ]
+                                }
+                            },
+                            "weather": {
+                                "units": "text",
+                                "data": []
+                            },
+                            "probabilityOfPrecipitation": {
+                                "units": "percent",
+                                "data": {
+                                    "avg": 7.0
+                                }
+                            },
+                            "quantitativePrecipitation": {
+                                "units": "in",
+                                "data": {
+                                    "sum": 0.0
+                                }
+                            },
+                            "snowfallAmount": {
+                                "units": "in",
+                                "data": {
+                                    "sum": 0.0
+                                }
+                            },
+                            "snowLevel": {
+                                "units": "ft",
+                                "data": {
+                                    "min": [
+                                        "2024-02-24T13:00:00",
+                                        3780.00012096
+                                    ],
+                                    "max": [
+                                        "2024-02-24T16:00:00",
+                                        3910.00012512
+                                    ]
+                                }
+                            }
+                        }
+                    },
+                    "overnight": {
+                        "status": {
+                            "temperature": 1,
+                            "skyCover": 3,
+                            "windDirection": 3,
+                            "windSpeed": 3,
+                            "windGust": 3,
+                            "weather": 3,
+                            "probabilityOfPrecipitation": 3,
+                            "quantitativePrecipitation": 3,
+                            "snowfallAmount": 2,
+                            "snowLevel": 3,
+                            "overall": 1
+                        },
+                        "data": {
+                            "temperature": {
+                                "units": "degF",
+                                "data": {
+                                    "max": [
+                                        "2024-02-24T18:00:00",
+                                        35.0
+                                    ],
+                                    "min": [
+                                        "2024-02-25T05:00:00",
+                                        27.0
+                                    ],
+                                    "avg": 30.625
+                                }
+                            },
+                            "skyCover": {
+                                "units": "condition",
+                                "data": {
+                                    "avg": "Mostly Cloudy"
+                                }
+                            },
+                            "windDirection": {
+                                "units": "cardinal",
+                                "data": {
+                                    "avg": "W"
+                                }
+                            },
+                            "windSpeed": {
+                                "units": "mph",
+                                "data": {
+                                    "avg": 10.357011828
+                                }
+                            },
+                            "windGust": {
+                                "units": "mph",
+                                "data": {
+                                    "max": [
+                                        "2024-02-24T19:00:00",
+                                        16.110907288
+                                    ]
+                                }
+                            },
+                            "weather": {
+                                "units": "text",
+                                "data": []
+                            },
+                            "probabilityOfPrecipitation": {
+                                "units": "percent",
+                                "data": {
+                                    "avg": 15.5
+                                }
+                            },
+                            "quantitativePrecipitation": {
+                                "units": "in",
+                                "data": {
+                                    "sum": 0.0
+                                }
+                            },
+                            "snowfallAmount": {
+                                "units": "in",
+                                "data": {
+                                    "sum": 0.0
+                                }
+                            },
+                            "snowLevel": {
+                                "units": "ft",
+                                "data": {
+                                    "min": [
+                                        "2024-02-24T22:00:00",
+                                        3386.0001083519996
+                                    ],
+                                    "max": [
+                                        "2024-02-24T19:00:00",
+                                        3570.0001142399997
+                                    ]
+                                }
+                            }
+                        }
+                    }
+                }
+            },
+            "day3": {
+                "date": [
+                    "2024-02-25",
+                    "Sunday"
+                ],
+                "time_period": {
+                    "24h": {
+                        "status": {
+                            "temperature": 1,
+                            "skyCover": 3,
+                            "windDirection": 3,
+                            "windSpeed": 3,
+                            "windGust": 2,
+                            "weather": 2,
+                            "probabilityOfPrecipitation": 3,
+                            "quantitativePrecipitation": 3,
+                            "snowfallAmount": 2,
+                            "snowLevel": 3,
+                            "overall": 1
+                        },
+                        "data": {
+                            "temperature": {
+                                "units": "degF",
+                                "data": {
+                                    "max": [
+                                        "2024-02-25T13:00:00",
+                                        39.0
+                                    ],
+                                    "min": [
+                                        "2024-02-26T05:00:00",
+                                        18.0
+                                    ],
+                                    "avg": 28.80952380952381
+                                }
+                            },
+                            "skyCover": {
+                                "units": "condition",
+                                "data": {
+                                    "avg": "Mostly Cloudy"
+                                }
+                            },
+                            "windDirection": {
+                                "units": "cardinal",
+                                "data": {
+                                    "avg": "WSW"
+                                }
+                            },
+                            "windSpeed": {
+                                "units": "mph",
+                                "data": {
+                                    "avg": 12.370875239
+                                }
+                            },
+                            "windGust": {
+                                "units": "mph",
+                                "data": {
+                                    "max": [
+                                        "2024-02-25T16:00:00",
+                                        26.467919115999997
+                                    ]
+                                }
+                            },
+                            "weather": {
+                                "units": "text",
+                                "data": [
+                                    [
+                                        "2024-02-25T10:00:00",
+                                        [
+                                            [
+                                                "rain",
+                                                "light",
+                                                "chance"
+                                            ],
+                                            [
+                                                "snow",
+                                                "light",
+                                                "chance"
+                                            ]
+                                        ]
+                                    ],
+                                    [
+                                        "2024-02-25T19:00:00",
+                                        [
+                                            [
+                                                "snow",
+                                                "light",
+                                                "chance"
+                                            ]
+                                        ]
+                                    ],
+                                    [
+                                        "2024-02-25T22:00:00",
+                                        [
+                                            [
+                                                "snow",
+                                                "light",
+                                                "slight_chance"
+                                            ]
+                                        ]
+                                    ]
+                                ]
+                            },
+                            "probabilityOfPrecipitation": {
+                                "units": "percent",
+                                "data": {
+                                    "avg": 31.25
+                                }
+                            },
+                            "quantitativePrecipitation": {
+                                "units": "in",
+                                "data": {
+                                    "sum": 0.0300000162
+                                }
+                            },
+                            "snowfallAmount": {
+                                "units": "in",
+                                "data": {
+                                    "sum": 0.10000005399999999
+                                }
+                            },
+                            "snowLevel": {
+                                "units": "ft",
+                                "data": {
+                                    "min": [
+                                        "2024-02-26T04:00:00",
+                                        393.000012576
+                                    ],
+                                    "max": [
+                                        "2024-02-25T13:00:00",
+                                        3622.000115904
+                                    ]
+                                }
+                            }
+                        }
+                    }
+                }
+            },
+            "day4": {
+                "date": [
+                    "2024-02-26",
+                    "Monday"
+                ],
+                "time_period": {
+                    "24h": {
+                        "status": {
+                            "temperature": 2,
+                            "skyCover": 3,
+                            "windDirection": 3,
+                            "windSpeed": 3,
+                            "windGust": 3,
+                            "weather": 3,
+                            "probabilityOfPrecipitation": 3,
+                            "quantitativePrecipitation": 3,
+                            "snowfallAmount": 2,
+                            "snowLevel": 3,
+                            "overall": 2
+                        },
+                        "data": {
+                            "temperature": {
+                                "units": "degF",
+                                "data": {
+                                    "max": [
+                                        "2024-02-26T12:00:00",
+                                        30.0
+                                    ],
+                                    "min": [
+                                        "2024-02-27T05:00:00",
+                                        13.0
+                                    ],
+                                    "avg": 21.61111111111111
+                                }
+                            },
+                            "skyCover": {
+                                "units": "condition",
+                                "data": {
+                                    "avg": "Partly Cloudy"
+                                }
+                            },
+                            "windDirection": {
+                                "units": "cardinal",
+                                "data": {
+                                    "avg": "NW"
+                                }
+                            },
+                            "windSpeed": {
+                                "units": "mph",
+                                "data": {
+                                    "avg": 9.535026762285714
+                                }
+                            },
+                            "windGust": {
+                                "units": "mph",
+                                "data": {
+                                    "max": [
+                                        "2024-02-26T13:00:00",
+                                        18.412465472
+                                    ]
+                                }
+                            },
+                            "weather": {
+                                "units": "text",
+                                "data": [
+                                    [
+                                        "2024-02-26T10:00:00",
+                                        [
+                                            [
+                                                "snow",
+                                                "light",
+                                                "chance"
+                                            ]
+                                        ]
+                                    ],
+                                    [
+                                        "2024-02-26T16:00:00",
+                                        [
+                                            [
+                                                null,
+                                                null,
+                                                null
+                                            ]
+                                        ]
+                                    ]
+                                ]
+                            },
+                            "probabilityOfPrecipitation": {
+                                "units": "percent",
+                                "data": {
+                                    "avg": 14.0
+                                }
+                            },
+                            "quantitativePrecipitation": {
+                                "units": "in",
+                                "data": {
+                                    "sum": 0.0
+                                }
+                            },
+                            "snowfallAmount": {
+                                "units": "in",
+                                "data": {
+                                    "sum": 0.0
+                                }
+                            },
+                            "snowLevel": {
+                                "units": "ft",
+                                "data": {
+                                    "min": [
+                                        "2024-02-27T04:00:00",
+                                        26.000000832
+                                    ],
+                                    "max": [
+                                        "2024-02-26T07:00:00",
+                                        157.000005024
+                                    ]
+                                }
+                            }
+                        }
+                    }
+                }
+            },
+            "day5": {
+                "date": [
+                    "2024-02-27",
+                    "Tuesday"
+                ],
+                "time_period": {
+                    "24h": {
+                        "status": {
+                            "temperature": 2,
+                            "skyCover": 3,
+                            "windDirection": 3,
+                            "windSpeed": 3,
+                            "windGust": 3,
+                            "weather": 3,
+                            "probabilityOfPrecipitation": 3,
+                            "quantitativePrecipitation": 3,
+                            "snowfallAmount": 2,
+                            "snowLevel": 3,
+                            "overall": 2
+                        },
+                        "data": {
+                            "temperature": {
+                                "units": "degF",
+                                "data": {
+                                    "max": [
+                                        "2024-02-27T14:00:00",
+                                        29.0
+                                    ],
+                                    "min": [
+                                        "2024-02-27T06:00:00",
+                                        12.0
+                                    ],
+                                    "avg": 22.352941176470587
+                                }
+                            },
+                            "skyCover": {
+                                "units": "condition",
+                                "data": {
+                                    "avg": "Mostly Cloudy"
+                                }
+                            },
+                            "windDirection": {
+                                "units": "cardinal",
+                                "data": {
+                                    "avg": "WSW"
+                                }
+                            },
+                            "windSpeed": {
+                                "units": "mph",
+                                "data": {
+                                    "avg": 7.8252978256
+                                }
+                            },
+                            "windGust": {
+                                "units": "mph",
+                                "data": {
+                                    "max": [
+                                        "2024-02-27T16:00:00",
+                                        13.809349104
+                                    ]
+                                }
+                            },
+                            "weather": {
+                                "units": "text",
+                                "data": [
+                                    [
+                                        "2024-02-27T10:00:00",
+                                        [
+                                            [
+                                                "snow",
+                                                "light",
+                                                "chance"
+                                            ]
+                                        ]
+                                    ]
+                                ]
+                            },
+                            "probabilityOfPrecipitation": {
+                                "units": "percent",
+                                "data": {
+                                    "avg": 30.5
+                                }
+                            },
+                            "quantitativePrecipitation": {
+                                "units": "in",
+                                "data": {
+                                    "sum": 0.0200000108
+                                }
+                            },
+                            "snowfallAmount": {
+                                "units": "in",
+                                "data": {
+                                    "sum": 0.300000162
+                                }
+                            },
+                            "snowLevel": {
+                                "units": "ft",
+                                "data": {
+                                    "min": [
+                                        "2024-02-27T10:00:00",
+                                        52.000001664
+                                    ],
+                                    "max": [
+                                        "2024-02-28T04:00:00",
+                                        604.000019328
+                                    ]
+                                }
+                            }
+                        }
+                    }
+                }
+            },
+            "day6": {
+                "date": [
+                    "2024-02-28",
+                    "Wednesday"
+                ],
+                "time_period": {
+                    "24h": {
+                        "status": {
+                            "temperature": 1,
+                            "skyCover": 3,
+                            "windDirection": 3,
+                            "windSpeed": 3,
+                            "windGust": 3,
+                            "weather": 3,
+                            "probabilityOfPrecipitation": 3,
+                            "quantitativePrecipitation": 3,
+                            "snowfallAmount": 2,
+                            "snowLevel": 3,
+                            "overall": 1
+                        },
+                        "data": {
+                            "temperature": {
+                                "units": "degF",
+                                "data": {
+                                    "max": [
+                                        "2024-02-28T14:00:00",
+                                        34.0
+                                    ],
+                                    "min": [
+                                        "2024-02-28T07:00:00",
+                                        22.0
+                                    ],
+                                    "avg": 28.823529411764707
+                                }
+                            },
+                            "skyCover": {
+                                "units": "condition",
+                                "data": {
+                                    "avg": "Considerable Cloudiness"
+                                }
+                            },
+                            "windDirection": {
+                                "units": "cardinal",
+                                "data": {
+                                    "avg": "SSW"
+                                }
+                            },
+                            "windSpeed": {
+                                "units": "mph",
+                                "data": {
+                                    "avg": 8.055453644
+                                }
+                            },
+                            "windGust": {
+                                "units": "mph",
+                                "data": {
+                                    "max": [
+                                        "2024-02-28T16:00:00",
+                                        14.960128196000001
+                                    ]
+                                }
+                            },
+                            "weather": {
+                                "units": "text",
+                                "data": [
+                                    [
+                                        "2024-02-28T10:00:00",
+                                        [
+                                            [
+                                                "snow",
+                                                "light",
+                                                "likely"
+                                            ]
+                                        ]
+                                    ],
+                                    [
+                                        "2024-02-28T16:00:00",
+                                        [
+                                            [
+                                                "snow",
+                                                "light",
+                                                "chance"
+                                            ]
+                                        ]
+                                    ]
+                                ]
+                            },
+                            "probabilityOfPrecipitation": {
+                                "units": "percent",
+                                "data": {
+                                    "avg": 48.5
+                                }
+                            },
+                            "quantitativePrecipitation": {
+                                "units": "in",
+                                "data": {
+                                    "sum": 0.0800000432
+                                }
+                            },
+                            "snowfallAmount": {
+                                "units": "in",
+                                "data": {
+                                    "sum": 0.9000004859999999
+                                }
+                            },
+                            "snowLevel": {
+                                "units": "ft",
+                                "data": {
+                                    "min": [
+                                        "2024-02-28T07:00:00",
+                                        630.00002016
+                                    ],
+                                    "max": [
+                                        "2024-02-28T16:00:00",
+                                        1890.00006048
+                                    ]
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        }
+    }
+}

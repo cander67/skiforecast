@@ -389,11 +389,11 @@ def check_temperature(dict):
     Returns:
         status (int): status, e.g., 1, 2, 3.
     """
-    if dict['max'][1] >= 34 or dict['min'][1] < 10:
+    if dict['max'][1] >= 35 or dict['min'][1] < 10:
         status = 1
-    elif (dict['max'][1] > 32 and dict['max'][1] < 34 and dict['min'][1] >= 10) or (dict['min'][1] <= 15 and dict['min'][1] >= 10 and dict['max'][1] < 34):
+    elif (dict['max'][1] > 33 and dict['max'][1] < 35 and dict['min'][1] >= 10) or (dict['min'][1] < 15 and dict['min'][1] >= 10 and dict['max'][1] < 35):
         status = 2
-    elif dict['max'][1] <= 32 and dict['min'][1] > 15:
+    elif dict['max'][1] <= 33 and dict['min'][1] >= 15:
         status = 3
     
     return status
@@ -473,9 +473,9 @@ def check_wind_gust(dict):
     """
     if dict['max'][1] >= 40:
         status = 1
-    elif dict['max'][1] < 40 and dict['max'][1] >= 25:
+    elif dict['max'][1] < 40 and dict['max'][1] >= 30:
         status = 2
-    elif dict['max'][1] < 25:
+    elif dict['max'][1] < 30:
         status = 3
     
     return status
@@ -1197,13 +1197,16 @@ class TableData:
                         weather = [(dt, [['snow']])]
 
                 if (len(weather) == 1 and weather[0][1] == [[None, None, None]]) or ((prob_precip == None) or (lo == None) or (hi == None)):
-                    precipitation = 'PRECIP: --'
+                    precip_string = 'NONE'
+                if (len(weather) == 1 and weather[0][1] == [[None, None, None]]) and (prob_precip < 15) and (lo < 1) and (hi < 1):
+                    precip_string = 'NONE'
+
                 if (len(weather) >= 1 and weather[0][1] != [[None, None, None]]) and prob_precip != None:
                     for i in range(len(weather)):
                         for j in range(len(weather[i][1])):
-                            if weather[i][1][j][0] == 'snow':
+                            if weather[i][1][j][0] == 'snow' or weather[i][1][j][0] == 'snow_showers':
                                 snow = True
-                            if weather[i][1][j][0] == 'rain':
+                            if weather[i][1][j][0] == 'rain' or weather[i][1][j][0] == 'rain_showers':
                                 rain = True
 
                     if snow == True and rain == False:
@@ -1228,7 +1231,37 @@ class TableData:
                     if snow == False and rain == False:
                         precip_string = f'NONE'
 
-                    precipitation = f'{precip_string}, {prob_precip:.0f}%'
+                if (len(weather) > 1 and weather[0][1] == [[None, None, None]]) and prob_precip != None:
+                    for i in range(len(weather)):
+                        for j in range(len(weather[i][1])):
+                            if weather[i][1][j][0] == 'snow' or weather[i][1][j][0] == 'snow_showers':
+                                snow = True
+                            if weather[i][1][j][0] == 'rain' or weather[i][1][j][0] == 'rain_showers':
+                                rain = True
+
+                    if snow == True and rain == False:
+                        precip_amt = day_data['snowfallAmount']['data']['sum']
+                        if precip_amt >= 0.1:
+                            precip_string = f'SNOW: {precip_amt:.1f}in'
+                        if precip_amt < 0.1:
+                            precip_string = f'SNOW: trace'
+                    if snow == False and rain == True:
+                        precip_amt = day_data['quantitativePrecipitation']['data']['sum']
+                        if precip_amt >= 0.1:
+                            precip_string = f'RAIN: {precip_amt:.1f}in'
+                        if precip_amt < 0.1:
+                            precip_string = f'RAIN: trace'
+                    if snow and rain == True:
+                        precip_range = [lo, hi]
+                        precip_range.sort(reverse = True)
+                        if precip_range[0] >= 0.1:
+                            precip_string = f'MIX: <{precip_range[0]:.1f}in'
+                        if precip_range[0] < 0.1:
+                            precip_string = f'MIX: trace'
+                    if snow == False and rain == False:
+                        precip_string = f'NONE'
+
+                precipitation = f'{precip_string}, {prob_precip:.0f}%'
 
                 # Snow Level
                 try:
@@ -1337,9 +1370,9 @@ class TableData:
 
                 # Status
                 try:
-                    if precipitation != 'PRECIP: --' and snowlevel != 'SLVL: --':
+                    if precipitation != 'NONE' and snowlevel != 'SLVL: --':
                         status = data['predictions'][day]['time_period']['24h']['status']['overall']
-                    elif precipitation == 'PRECIP: --' or snowlevel == 'SLVL: --':
+                    elif precipitation == 'NONE' or snowlevel == 'SLVL: --':
                         status = data['predictions'][day]['time_period']['24h']['status']['overall']
                 except:
                     status = 0
