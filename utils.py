@@ -389,11 +389,11 @@ def check_temperature(dict):
     Returns:
         status (int): status, e.g., 1, 2, 3.
     """
-    if dict['max'][1] >= 34 or dict['min'][1] < 10:
+    if dict['max'][1] >= 35 or dict['min'][1] < 10:
         status = 1
-    elif (dict['max'][1] > 32 and dict['max'][1] < 34 and dict['min'][1] >= 10) or (dict['min'][1] <= 15 and dict['min'][1] >= 10 and dict['max'][1] < 34):
+    elif (dict['max'][1] > 33 and dict['max'][1] < 35 and dict['min'][1] >= 10) or (dict['min'][1] < 15 and dict['min'][1] >= 10 and dict['max'][1] < 35):
         status = 2
-    elif dict['max'][1] <= 32 and dict['min'][1] > 15:
+    elif dict['max'][1] <= 33 and dict['min'][1] >= 15:
         status = 3
     
     return status
@@ -473,9 +473,9 @@ def check_wind_gust(dict):
     """
     if dict['max'][1] >= 40:
         status = 1
-    elif dict['max'][1] < 40 and dict['max'][1] >= 25:
+    elif dict['max'][1] < 40 and dict['max'][1] >= 30:
         status = 2
-    elif dict['max'][1] < 25:
+    elif dict['max'][1] < 30:
         status = 3
     
     return status
