@@ -1236,6 +1236,39 @@ class TableData:
                         precip_string = f'NONE'
                         print(f'NONE: {location}, {day}, {precip_string}')
 
+                if (len(weather) > 1 and weather[0][1] == [[None, None, None]]) and prob_precip != None:
+                    for i in range(len(weather)):
+                        for j in range(len(weather[i][1])):
+                            if weather[i][1][j][0] == 'snow' or weather[i][1][j][0] == 'snow_showers':
+                                snow = True
+                            if weather[i][1][j][0] == 'rain' or weather[i][1][j][0] == 'rain_showers':
+                                rain = True
+
+                            print(f'WEATHER: {location}, {day}, {weather[i][1][j][0]}\nSNOW: {snow}\nRAIN: {rain}\n')
+
+                    if snow == True and rain == False:
+                        precip_amt = day_data['snowfallAmount']['data']['sum']
+                        if precip_amt >= 0.1:
+                            precip_string = f'SNOW: {precip_amt:.1f}in'
+                        if precip_amt < 0.1:
+                            precip_string = f'SNOW: trace'
+                    if snow == False and rain == True:
+                        precip_amt = day_data['quantitativePrecipitation']['data']['sum']
+                        if precip_amt >= 0.1:
+                            precip_string = f'RAIN: {precip_amt:.1f}in'
+                        if precip_amt < 0.1:
+                            precip_string = f'RAIN: trace'
+                    if snow and rain == True:
+                        precip_range = [lo, hi]
+                        precip_range.sort(reverse = True)
+                        if precip_range[0] >= 0.1:
+                            precip_string = f'MIX: <{precip_range[0]:.1f}in'
+                        if precip_range[0] < 0.1:
+                            precip_string = f'MIX: trace'
+                    if snow == False and rain == False:
+                        precip_string = f'NONE'
+                        print(f'NONE: {location}, {day}, {precip_string}')
+
                 precipitation = f'{precip_string}, {prob_precip:.0f}%'
 
                 # Snow Level
