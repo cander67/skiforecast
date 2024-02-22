@@ -1179,6 +1179,7 @@ class TableData:
                 # Precipitation
                 try:
                     weather = list(day_data['weather']['data'])
+                    print(f'TRY WEATHER: {location}, {day}, {weather}')
                     prob_precip = day_data['probabilityOfPrecipitation']['data']['avg']
                     lo = day_data['quantitativePrecipitation']['data']['sum']
                     hi = day_data['snowfallAmount']['data']['sum']
@@ -1197,14 +1198,20 @@ class TableData:
                         weather = [(dt, [['snow']])]
 
                 if (len(weather) == 1 and weather[0][1] == [[None, None, None]]) or ((prob_precip == None) or (lo == None) or (hi == None)):
-                    precipitation = 'PRECIP: --'
+                    precip_string = 'NONE'
+                if (len(weather) == 1 and weather[0][1] == [[None, None, None]]) and (prob_precip < 15) and (lo < 1) and (hi < 1):
+                    precip_string = 'NONE'
+                    print(f'WEATHER: {location}, {day}, {precip_string}')
+
                 if (len(weather) >= 1 and weather[0][1] != [[None, None, None]]) and prob_precip != None:
                     for i in range(len(weather)):
                         for j in range(len(weather[i][1])):
-                            if weather[i][1][j][0] == 'snow':
+                            if weather[i][1][j][0] == 'snow' or weather[i][1][j][0] == 'snow_showers':
                                 snow = True
-                            if weather[i][1][j][0] == 'rain':
+                            if weather[i][1][j][0] == 'rain' or weather[i][1][j][0] == 'rain_showers':
                                 rain = True
+
+                            print(f'WEATHER: {location}, {day}, {weather[i][1][j][0]}\nSNOW: {snow}\nRAIN: {rain}\n')
 
                     if snow == True and rain == False:
                         precip_amt = day_data['snowfallAmount']['data']['sum']
@@ -1227,8 +1234,9 @@ class TableData:
                             precip_string = f'MIX: trace'
                     if snow == False and rain == False:
                         precip_string = f'NONE'
+                        print(f'NONE: {location}, {day}, {precip_string}')
 
-                    precipitation = f'{precip_string}, {prob_precip:.0f}%'
+                precipitation = f'{precip_string}, {prob_precip:.0f}%'
 
                 # Snow Level
                 try:
@@ -1337,9 +1345,9 @@ class TableData:
 
                 # Status
                 try:
-                    if precipitation != 'PRECIP: --' and snowlevel != 'SLVL: --':
+                    if precipitation != 'NONE' and snowlevel != 'SLVL: --':
                         status = data['predictions'][day]['time_period']['24h']['status']['overall']
-                    elif precipitation == 'PRECIP: --' or snowlevel == 'SLVL: --':
+                    elif precipitation == 'NONE' or snowlevel == 'SLVL: --':
                         status = data['predictions'][day]['time_period']['24h']['status']['overall']
                 except:
                     status = 0
