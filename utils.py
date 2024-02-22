@@ -1179,7 +1179,6 @@ class TableData:
                 # Precipitation
                 try:
                     weather = list(day_data['weather']['data'])
-                    print(f'TRY WEATHER: {location}, {day}, {weather}')
                     prob_precip = day_data['probabilityOfPrecipitation']['data']['avg']
                     lo = day_data['quantitativePrecipitation']['data']['sum']
                     hi = day_data['snowfallAmount']['data']['sum']
@@ -1201,7 +1200,6 @@ class TableData:
                     precip_string = 'NONE'
                 if (len(weather) == 1 and weather[0][1] == [[None, None, None]]) and (prob_precip < 15) and (lo < 1) and (hi < 1):
                     precip_string = 'NONE'
-                    print(f'WEATHER: {location}, {day}, {precip_string}')
 
                 if (len(weather) >= 1 and weather[0][1] != [[None, None, None]]) and prob_precip != None:
                     for i in range(len(weather)):
@@ -1211,8 +1209,6 @@ class TableData:
                             if weather[i][1][j][0] == 'rain' or weather[i][1][j][0] == 'rain_showers':
                                 rain = True
 
-                            print(f'WEATHER: {location}, {day}, {weather[i][1][j][0]}\nSNOW: {snow}\nRAIN: {rain}\n')
-
                     if snow == True and rain == False:
                         precip_amt = day_data['snowfallAmount']['data']['sum']
                         if precip_amt >= 0.1:
@@ -1234,7 +1230,6 @@ class TableData:
                             precip_string = f'MIX: trace'
                     if snow == False and rain == False:
                         precip_string = f'NONE'
-                        print(f'NONE: {location}, {day}, {precip_string}')
 
                 if (len(weather) > 1 and weather[0][1] == [[None, None, None]]) and prob_precip != None:
                     for i in range(len(weather)):
@@ -1244,8 +1239,6 @@ class TableData:
                             if weather[i][1][j][0] == 'rain' or weather[i][1][j][0] == 'rain_showers':
                                 rain = True
 
-                            print(f'WEATHER: {location}, {day}, {weather[i][1][j][0]}\nSNOW: {snow}\nRAIN: {rain}\n')
-
                     if snow == True and rain == False:
                         precip_amt = day_data['snowfallAmount']['data']['sum']
                         if precip_amt >= 0.1:
@@ -1267,7 +1260,6 @@ class TableData:
                             precip_string = f'MIX: trace'
                     if snow == False and rain == False:
                         precip_string = f'NONE'
-                        print(f'NONE: {location}, {day}, {precip_string}')
 
                 precipitation = f'{precip_string}, {prob_precip:.0f}%'
 
