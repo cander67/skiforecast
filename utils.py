@@ -1198,8 +1198,16 @@ class TableData:
 
                 if (len(weather) == 1 and weather[0][1] == [[None, None, None]]) or ((prob_precip == None) or (lo == None) or (hi == None)):
                     precip_string = 'NONE'
-                if (len(weather) == 1 and weather[0][1] == [[None, None, None]]) and (prob_precip < 15) and (lo < 1) and (hi < 1):
+                if (len(weather) == 1 and weather[0][1] == [[None, None, None]]) and (prob_precip < 10):
                     precip_string = 'NONE'
+                if (len(weather) == 1 and weather[0][1] == [[None, None, None]]) and (prob_precip > 10):
+                    max_temp = data['predictions'][day]['time_period']['24h']['data']['temperature']['data']['max']
+                    if max_temp[1] <= 32:
+                        precip_amt = day_data['snowfallAmount']['data']['sum']
+                        precip_string = f'SNOW: {precip_amt:.1f}in'
+                    if max_temp[1] > 32:
+                        precip_amt = day_data['quantitativePrecipitation']['data']['sum']
+                        precip_string = f'RAIN: {precip_amt:.1f}in'
 
                 if (len(weather) >= 1 and weather[0][1] != [[None, None, None]]) and prob_precip != None:
                     for i in range(len(weather)):
