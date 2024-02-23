@@ -255,7 +255,7 @@ def convert_units(value, property, units):
                 value = 'Considerable Cloudiness'
             elif value >= 51 and value < 70:
                 value = 'Mostly Cloudy'
-            elif value >= 26 and value < 50:
+            elif value >= 26 and value < 51:
                 value = 'Partly Cloudy'
             elif value >= 6 and value < 26:
                 value = 'Mostly Clear'
