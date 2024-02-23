@@ -452,9 +452,9 @@ def check_wind_speed(dict):
     Returns:
         status (int): status, e.g., 1, 2, 3.
     """
-    if dict['avg'] >= 30:
+    if dict['avg'] >= 35:
         status = 1
-    elif dict['avg'] < 30 and dict['avg'] >= 20:
+    elif dict['avg'] < 35 and dict['avg'] >= 20:
         status = 2
     elif dict['avg'] < 20:
         status = 3
@@ -471,11 +471,11 @@ def check_wind_gust(dict):
     Returns:
         status (int): status, e.g., 1, 2, 3.
     """
-    if dict['max'][1] >= 40:
+    if dict['max'][1] >= 45:
         status = 1
-    elif dict['max'][1] < 40 and dict['max'][1] >= 30:
+    elif dict['max'][1] < 45 and dict['max'][1] >= 35:
         status = 2
-    elif dict['max'][1] < 30:
+    elif dict['max'][1] < 35:
         status = 3
     
     return status
