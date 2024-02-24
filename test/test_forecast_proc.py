@@ -8,7 +8,7 @@ import bs4 as BeautifulSoup
 import utils as utils
 
 #now = datetime.now(pytz.UTC)
-now = datetime(2024, 2, 22, 13, 8, 0, 0, pytz.UTC)
+now = datetime(2024, 2, 23, 13, 8, 0, 0, pytz.UTC)
 local_time = now.astimezone(pytz.timezone('US/Pacific'))
 
 
