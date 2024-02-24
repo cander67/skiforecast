@@ -3,9 +3,11 @@ import json
 import re
 import time
 from datetime import datetime, timedelta
+import pytz
 from azure.storage.blob import BlobServiceClient
+import logging
 
-def writeblob(blob_name, blob_input, container_name, account_url, default_credential):
+def writeblob(blob_name, blob_input, container_name, func_account_url, default_credential):
     '''Write blob to Azure Storage
     Args:
         blob_name (str) : name of blob to write
@@ -18,7 +20,7 @@ def writeblob(blob_name, blob_input, container_name, account_url, default_creden
     '''
     try:
         # Create a blob service client
-        blob_service_client = BlobServiceClient(account_url=account_url, credential=default_credential)
+        blob_service_client = BlobServiceClient(account_url=func_account_url, credential=default_credential)
 
         # Create blob client using local file name as blob name
         blob_client = blob_service_client.get_blob_client(container=container_name, blob=blob_name)
@@ -27,11 +29,11 @@ def writeblob(blob_name, blob_input, container_name, account_url, default_creden
         blob_client.upload_blob(blob_input, overwrite=True)
 
     except Exception as e:
-        print(f'ERROR: {e}')
+        logging.info(f'\n\nERROR: {e}\n\n')
 
     return None
 
-def readblob(blob_name, container_name, account_url, default_credential):
+def readblob(blob_name, container_name, func_account_url, default_credential):
     '''Read blob from Azure Storage
     Args:
         blob_name (str) : name of blob to read
@@ -43,7 +45,7 @@ def readblob(blob_name, container_name, account_url, default_credential):
     '''
     try:
         # Create a blob service client
-        blob_service_client = BlobServiceClient(account_url=account_url, credential=default_credential)
+        blob_service_client = BlobServiceClient(account_url=func_account_url, credential=default_credential)
 
         # Create blob client with blob name
         blob_client = blob_service_client.get_blob_client(container=container_name, blob=blob_name)
@@ -53,7 +55,7 @@ def readblob(blob_name, container_name, account_url, default_credential):
         blob_output = blob.readall()
 
     except Exception as e:
-        print(f'ERROR: {e}')
+        logging.info(f'\n\nERROR: {e}\n\n')
 
     return blob_output
 
@@ -67,7 +69,10 @@ def assign_time_groups(current_time, dt):
     Returns:
         time_group (str): Time group.
     '''
-    ref_dt = datetime.strptime(f'{current_time.date()}T06:00:00', '%Y-%m-%dT%H:%M:%S')
+    # Convert current_time and dt to Pacific Time
+    pacific = pytz.timezone('US/Pacific')
+    current_time = current_time.astimezone(pacific)
+    ref_dt = datetime.strptime(f'{current_time.date()}T06:00:00-08:00', '%Y-%m-%dT%H:%M:%S%z')
     delta = dt - ref_dt
     
     if dt.day == ref_dt.day and dt.hour >= 6:
@@ -99,8 +104,6 @@ def assign_time_groups(current_time, dt):
 
     else:
         time_group = None
-        #if time_group == None:
-            #print(f'NONE: {dt} - {ref_dt} = {delta}')
     
     return time_group
 
@@ -252,7 +255,7 @@ def convert_units(value, property, units):
                 value = 'Considerable Cloudiness'
             elif value >= 51 and value < 70:
                 value = 'Mostly Cloudy'
-            elif value >= 26 and value < 50:
+            elif value >= 26 and value < 51:
                 value = 'Partly Cloudy'
             elif value >= 6 and value < 26:
                 value = 'Mostly Clear'
@@ -386,11 +389,11 @@ def check_temperature(dict):
     Returns:
         status (int): status, e.g., 1, 2, 3.
     """
-    if dict['max'][1] >= 34 or dict['min'][1] < 10:
+    if dict['max'][1] >= 35 or dict['min'][1] < 10:
         status = 1
-    elif (dict['max'][1] > 32 and dict['max'][1] < 34 and dict['min'][1] >= 10) or (dict['min'][1] <= 15 and dict['min'][1] >= 10 and dict['max'][1] < 34):
+    elif (dict['max'][1] > 33 and dict['max'][1] < 35 and dict['min'][1] >= 10) or (dict['min'][1] < 15 and dict['min'][1] >= 10 and dict['max'][1] < 35):
         status = 2
-    elif dict['max'][1] <= 32 and dict['min'][1] > 15:
+    elif dict['max'][1] <= 33 and dict['min'][1] >= 15:
         status = 3
     
     return status
@@ -449,9 +452,9 @@ def check_wind_speed(dict):
     Returns:
         status (int): status, e.g., 1, 2, 3.
     """
-    if dict['avg'] >= 30:
+    if dict['avg'] >= 35:
         status = 1
-    elif dict['avg'] < 30 and dict['avg'] >= 20:
+    elif dict['avg'] < 35 and dict['avg'] >= 20:
         status = 2
     elif dict['avg'] < 20:
         status = 3
@@ -468,11 +471,11 @@ def check_wind_gust(dict):
     Returns:
         status (int): status, e.g., 1, 2, 3.
     """
-    if dict['max'][1] >= 40:
+    if dict['max'][1] >= 45:
         status = 1
-    elif dict['max'][1] < 40 and dict['max'][1] >= 25:
+    elif dict['max'][1] < 45 and dict['max'][1] >= 35:
         status = 2
-    elif dict['max'][1] < 25:
+    elif dict['max'][1] < 35:
         status = 3
     
     return status
@@ -638,7 +641,7 @@ class APIEndpoints:
                 time.sleep(0.25)
 
             except Exception as e:
-                print(f'Error in APIEndpoints.__init__: \n{location}\n{e}\n')
+                logging.info(f'\n\nError in APIEndpoints.__init__: \n{location}\n{e}\n\n')
 
     def get_endpoints(self):
         '''Return endpoints'''
@@ -699,7 +702,7 @@ class GridData:
             time.sleep(1)
 
         except Exception as e:
-            print(f'Error in GridData.__init__: \n{self._location}\n{e}\n')
+            logging.info(f'\n\nError in GridData.__init__: \n{self._location}\n{e}\n\n')
             self._request_error = True
 
         return self._blob
@@ -852,8 +855,9 @@ class TableData:
             values = []        # list of time:value pairs assigned to a time group
             for _ in times_values:
                 valid_time = _['validTime']
-                valid_time = re.sub(r"\+00:00/[a-zA-Z0-9]+", '', valid_time)
-                dt = datetime.strptime(valid_time, '%Y-%m-%dT%H:%M:%S')
+                valid_time = re.sub(r"/[a-zA-Z0-9]+", '', valid_time)
+                dt = datetime.strptime(valid_time, '%Y-%m-%dT%H:%M:%S%z')
+                dt = dt.astimezone(pytz.timezone('US/Pacific'))
                 dt_str = dt.strftime('%Y-%m-%dT%H:%M:%S')
                 value = _['value']
 
@@ -885,7 +889,6 @@ class TableData:
             forecast['predictions'] = predictions
             self._forecast = forecast
 
-        #print(f'PARSE SUCCESS')
         return self._forecast
     
 
@@ -907,19 +910,13 @@ class TableData:
         date_strings = {'day0': None, 'day1': None, 'day2': None, 'day3': None, 'day4': None, 'day5': None, 'day6': None}
 
         for day in self._time_periods.keys():
-            #print(day)
             daily_results = {}
             for time_period in self._time_periods[day]:
-                #print(time_period)
                 time_period_results = {}
                 time_period_status = {}
                 overall_status = 3
                 try:   
                     for property in self._forecast['predictions'].keys():
-                        #if property == 'weather':
-                            #print(f'calc_table_data: {day}, {time_period}, {property}')
-                        #if property == 'snowLevel':
-                            #print(f'calc_table_data: {day}, {time_period}, {property}')
                         max = None
                         min = None
                         avg = None
@@ -938,7 +935,6 @@ class TableData:
                             if date_strings.get(day) == None:
                                 date_strings[day] = date_str
                         except TypeError:
-                            #print(f'EXCEPT, TYPEERROR: {property}, {day}, {time_period}')
                             if time_period == '24h':
                                 dt_0 = datetime.strptime(date_strings[day]+'T06:00:00', '%Y-%m-%dT%H:%M:%S')
                                 date = dt_0.date()
@@ -948,25 +944,21 @@ class TableData:
                                     self._forecast['predictions'][property]['data'][day] = [(dt_0.strftime('%Y-%m-%dT%H:%M:%S'), [[None, None, None]])]
                                 if property == 'snowLevel':
                                     self._forecast['predictions'][property]['data'][day] = [(dt_0.strftime('%Y-%m-%dT%H:%M:%S'), None)]
-                                #print(f"NEW TIME: {dt_0.strftime('%Y-%m-%dT%H:%M:%S')}")
                             if time_period == 'am':
                                 dt_0 = datetime.strptime(date_strings[day]+'T06:00:00', '%Y-%m-%dT%H:%M:%S')
                                 date = dt_0.date()
                                 day_of_week = date.strftime('%A')
                                 date_str = date_strings[day]
-                                #print(f"NEW TIME: {dt_0.strftime('%Y-%m-%dT%H:%M:%S')}")
                             if time_period == 'pm':
                                 dt_0 = datetime.strptime(date_strings[day]+'T12:00:00', '%Y-%m-%dT%H:%M:%S')
                                 date = dt_0.date()
                                 day_of_week = date.strftime('%A')
                                 date_str = date_strings[day]
-                                #print(f"NEW TIME: {dt_0.strftime('%Y-%m-%dT%H:%M:%S')}")
                             if time_period == 'overnight':
                                 dt_0 = datetime.strptime(date_strings[day]+'T18:00:00', '%Y-%m-%dT%H:%M:%S')
                                 date = dt_0.date()
                                 day_of_week = date.strftime('%A')
                                 date_str = date_strings[day]
-                                #print(f"NEW TIME: {dt_0.strftime('%Y-%m-%dT%H:%M:%S')}")
                                 pass
                         # Collect property values for this day
                         try:
@@ -974,13 +966,11 @@ class TableData:
                             if times_values == None:
                                 if property == 'weather':
                                     self._forecast['predictions'][property]['data'][day] = [(dt_0.strftime('%Y-%m-%dT%H:%M:%S'), [[None, None, None]])]
-                                    #print(f"TRY WEATHER: {self._forecast['predictions'][property]['data'][day]}")
                                 if property == 'snowLevel':
                                     self._forecast['predictions'][property]['data'][day] = [(dt_0.strftime('%Y-%m-%dT%H:%M:%S'), None)]
-                                    #print(f"TRY SNOWLEVEL: {self._forecast['predictions'][property]['data'][day]}")
                                 continue
                         except:
-                            print(f'EXCEPT: {property}: {times_values}')
+                            logging.info(f'\n\nEXCEPT: {property}: {times_values}\n\n')
                             pass
                         
                         # Initialize lists for 24h, am, pm, and overnight values
@@ -999,19 +989,13 @@ class TableData:
                         for _ in range(len(times_values)):
                             _24h_times.append(times_values[_][0])
                             _24h_values.append(times_values[_][1])
-                            #if property == 'weather':
-                                #print(f'WEATHER 24h TIMES: {_24h_times}, {_24h_values}')
-                            #if property == 'snowLevel':
-                                #print(f'SNOWLEVEL 24h TIMES: {_24h_times}, {_24h_values}')
                             dt = datetime.strptime(times_values[_][0], '%Y-%m-%dT%H:%M:%S')
                             if dt.day == dt_0.day and dt.hour < 12:
                                 am_times.append(times_values[_][0])
                                 am_values.append(times_values[_][1])
-                                #print(f'AM TIMES: {am_times}, {am_values}')
                             elif dt.day == dt_0.day and 12 <= dt.hour < 18:
                                 pm_times.append(times_values[_][0])
                                 pm_values.append(times_values[_][1])
-                                #print(f'PM TIMES: {pm_times}, {pm_values}')
                             elif dt.day == dt_0.day and 18 <= dt.hour:
                                 overnight_times.append(times_values[_][0])
                                 overnight_values.append(times_values[_][1])
@@ -1035,11 +1019,6 @@ class TableData:
 
                         # Initialize dictionaries for metric and standard results
                         calculated_values = {}
-
-                        #if property == 'weather':
-                            #print(f'WEATHER: {day}, {time_period}: {times_values}')
-                        #if property == 'snowLevel':
-                            #print(f'SNOWLEVEL: {day}, {time_period}: {times_values}')
                         
                         if property != 'weather':
 
@@ -1096,7 +1075,7 @@ class TableData:
                                         if property == 'snowLevel':
                                             status = check_status(property, calculated_values, self._elev)
                                     except Exception as e:
-                                        print(f'EXCEPT: {property}, {day}: {times_values}')
+                                        logging.info(f'\n\nEXCEPT: {property}, {day}: {times_values}\n\n')
                                         pass
                                     time_period_status[property] = status
 
@@ -1104,7 +1083,6 @@ class TableData:
                                 time_period_results[property] = {'units': new_units,
                                                                 'data': (None)}
                                 time_period_status[property] = 2
-                                #print(f'ELIF: {property}, {day}, {time_period}: {times_values}')
 
                         elif property == 'weather':
                             # Get weather data
@@ -1124,14 +1102,13 @@ class TableData:
                                 time_period_results[property] = {'units': new_units,
                                                             'data': (None)}
                                 time_period_status[property] = 2
-                                #print(f'ELIF: {property}, {day}, {time_period}: {times_values}')
 
                 except Exception as e:
                     if Exception == ValueError:
-                        print(f'VALUE ERROR: {day}, {time_period}, {property}')
+                        logging.info(f'\n\nVALUE ERROR: {day}, {time_period}, {property}\n\n')
                         pass
                     else:
-                        print(f'OTHER ERROR: {self._forecast["href"]}, {day}, {time_period}, {property}, {e}')
+                        logging.info(f'\n\nOTHER ERROR: {self._forecast["href"]}, {day}, {time_period}, {property}, {e}\n\n')
                         pass
 
                 # Return minimum value of statuses for this time period
@@ -1150,8 +1127,6 @@ class TableData:
                                            'predictions': results}}
         
         self._table_data = table_data
-
-        #print(f'TABLE DATA SUCCESS')
 
         return self._table_data
     
@@ -1207,7 +1182,6 @@ class TableData:
                     prob_precip = day_data['probabilityOfPrecipitation']['data']['avg']
                     lo = day_data['quantitativePrecipitation']['data']['sum']
                     hi = day_data['snowfallAmount']['data']['sum']
-                    #print(f'TRY: WEATHER: {weather}')
                 except:
                     prob_precip = day_data['probabilityOfPrecipitation']['data']['avg']
                     lo = day_data['quantitativePrecipitation']['data']['sum']
@@ -1222,27 +1196,25 @@ class TableData:
                     if hi > 0 and lo == 0:
                         weather = [(dt, [['snow']])]
 
-                    #print(f'EXCEPT: {weather}, {prob_precip}, {lo}, {hi}')
-                    
-                #if weather or prob_precip or lo or hi == None:
-                    #precipitation = 'PRECIP: --'
-                    #print(f'weather & prob_precip: == None')
-                    #print(f'weather: {weather}, prob_precip: {prob_precip}, lo: {lo}, hi: {hi}')
-                    #print(f'weather: {type(weather)}, prob_precip: {type(prob_precip)}, lo: {type(lo)}, hi: {type(hi)}')
                 if (len(weather) == 1 and weather[0][1] == [[None, None, None]]) or ((prob_precip == None) or (lo == None) or (hi == None)):
-                    precipitation = 'PRECIP: --'
-                    #print(f'weather == [[None, None, None]] or prob_precip: == None')
-                    #print(f'weather: {weather}, prob_precip: {prob_precip}, lo: {lo}, hi: {hi}')
-                    #print(f'weather: {len(weather)}, {weather[0][1]}, {type(weather[0][1])}, {type(weather)}, prob_precip: {type(prob_precip)}, lo: {type(lo)}, hi: {type(hi)}')
+                    precip_string = 'NONE'
+                if (len(weather) == 1 and weather[0][1] == [[None, None, None]]) and (prob_precip < 10):
+                    precip_string = 'NONE'
+                if (len(weather) == 1 and weather[0][1] == [[None, None, None]]) and (prob_precip > 10):
+                    max_temp = data['predictions'][day]['time_period']['24h']['data']['temperature']['data']['max']
+                    if max_temp[1] <= 32:
+                        precip_amt = day_data['snowfallAmount']['data']['sum']
+                        precip_string = f'SNOW: {precip_amt:.1f}in'
+                    if max_temp[1] > 32:
+                        precip_amt = day_data['quantitativePrecipitation']['data']['sum']
+                        precip_string = f'RAIN: {precip_amt:.1f}in'
+
                 if (len(weather) >= 1 and weather[0][1] != [[None, None, None]]) and prob_precip != None:
-                    #print(f'weather and prob_precip: != None')
-                    #print(f'weather: {weather}, prob_precip: {prob_precip}, lo: {lo}, hi: {hi}')
-                    #print(f'weather: {len(weather)}, {weather[0][1]}, {type(weather[0][1])}, {type(weather)}, prob_precip: {type(prob_precip)}, lo: {type(lo)}, hi: {type(hi)}')
                     for i in range(len(weather)):
                         for j in range(len(weather[i][1])):
-                            if weather[i][1][j][0] == 'snow':
+                            if weather[i][1][j][0] == 'snow' or weather[i][1][j][0] == 'snow_showers':
                                 snow = True
-                            if weather[i][1][j][0] == 'rain':
+                            if weather[i][1][j][0] == 'rain' or weather[i][1][j][0] == 'rain_showers':
                                 rain = True
 
                     if snow == True and rain == False:
@@ -1267,8 +1239,37 @@ class TableData:
                     if snow == False and rain == False:
                         precip_string = f'NONE'
 
-                    precipitation = f'{precip_string}, {prob_precip:.0f}%'
-                #print(f'PRECIPITATION: {day}, {precipitation}')
+                if (len(weather) > 1 and weather[0][1] == [[None, None, None]]) and prob_precip != None:
+                    for i in range(len(weather)):
+                        for j in range(len(weather[i][1])):
+                            if weather[i][1][j][0] == 'snow' or weather[i][1][j][0] == 'snow_showers':
+                                snow = True
+                            if weather[i][1][j][0] == 'rain' or weather[i][1][j][0] == 'rain_showers':
+                                rain = True
+
+                    if snow == True and rain == False:
+                        precip_amt = day_data['snowfallAmount']['data']['sum']
+                        if precip_amt >= 0.1:
+                            precip_string = f'SNOW: {precip_amt:.1f}in'
+                        if precip_amt < 0.1:
+                            precip_string = f'SNOW: trace'
+                    if snow == False and rain == True:
+                        precip_amt = day_data['quantitativePrecipitation']['data']['sum']
+                        if precip_amt >= 0.1:
+                            precip_string = f'RAIN: {precip_amt:.1f}in'
+                        if precip_amt < 0.1:
+                            precip_string = f'RAIN: trace'
+                    if snow and rain == True:
+                        precip_range = [lo, hi]
+                        precip_range.sort(reverse = True)
+                        if precip_range[0] >= 0.1:
+                            precip_string = f'MIX: <{precip_range[0]:.1f}in'
+                        if precip_range[0] < 0.1:
+                            precip_string = f'MIX: trace'
+                    if snow == False and rain == False:
+                        precip_string = f'NONE'
+
+                precipitation = f'{precip_string}, {prob_precip:.0f}%'
 
                 # Snow Level
                 try:
@@ -1287,12 +1288,9 @@ class TableData:
                         snow_level_min[1] = round(snow_level_min[1] / 10) * 10
 
                 except: 
-                    #print(f'RESETING SNOW LEVEL: {day}')
                     snow_level_max = None
                     snow_level_min = None
                     snowlevel = 'SLVL: --'
-                    #if list(day_data['snowLevel']['data']) == []:
-                        #snowlevel = 'SLVL: --'
 
                 if snow_level_max != None and snow_level_min != None:
                     dt_sl_max = datetime.strptime(snow_level_max[0], '%Y-%m-%dT%H:%M:%S')
@@ -1316,8 +1314,6 @@ class TableData:
                         snowlevel_string = f'steady'
                         snow_level_range = [snow_level_max[1], snow_level_min[1]]
                     snowlevel = f'SLVL: {snow_level_range[0]:.0f}-{snow_level_range[1]:.0f}ft {snowlevel_string}'
-
-                #print(f'SNOW LEVEL: {day}, {snowlevel}')
 
                 # Temps
                 temps = []
@@ -1382,15 +1378,12 @@ class TableData:
 
                 # Status
                 try:
-                    if precipitation != 'PRECIP: --' and snowlevel != 'SLVL: --':
+                    if precipitation != 'NONE' and snowlevel != 'SLVL: --':
                         status = data['predictions'][day]['time_period']['24h']['status']['overall']
-                    elif precipitation == 'PRECIP: --' or snowlevel == 'SLVL: --':
-                        #if data['predictions'][day]['time_period']['24h']['status']['overall'] <= 2:
+                    elif precipitation == 'NONE' or snowlevel == 'SLVL: --':
                         status = data['predictions'][day]['time_period']['24h']['status']['overall']
-                        #else: status = 2
                 except:
                     status = 0
-                    #raise
 
                 # Wind
                 try:
@@ -1415,12 +1408,8 @@ class TableData:
                 row.append([text, alt, status])
 
             except Exception as e:
-                print(f'EXCEPT: {location}, {day}, {e}')
+                logging.info(f'\n\nEXCEPT: {location}, {day}, {e}\n\n')
                 pass
-
-        #print("OUTPUT")
-        #for cell in row:
-            #print(cell)
 
         self._row = row
         return self._row

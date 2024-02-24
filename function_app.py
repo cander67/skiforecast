@@ -1,4 +1,5 @@
 import azure.functions as func
+import logging
 
 app = func.FunctionApp()
 
@@ -8,68 +9,77 @@ def cron(skiForecastTimer: func.TimerRequest) -> None:
     import os
     import json
     from datetime import datetime
+    import pytz
     import bs4 as BeautifulSoup
     from dotenv import load_dotenv
-    import src.utils as utils
-    import src.get_endpoints as get_endpoints
-    import src.get_forecasts as get_forecasts
-    import src.proc_forecasts as proc_forecasts
+    import utils as utils
+    import get_endpoints as get_endpoints
+    import get_forecasts as get_forecasts
+    import proc_forecasts as proc_forecasts
+
     from azure.identity import DefaultAzureCredential
     from azure.storage.blob import BlobServiceClient, ContainerClient, ContentSettings
     
     # Get current time
-    now = datetime.now()
+    now = datetime.now(pytz.UTC)
+    local_time = now.astimezone(pytz.timezone('US/Pacific'))
+    logging.info(f'\n\nPython timer trigger function ran at {now}\n\n')
 
     # Load environment variables
     load_dotenv()
 
     # Define parameters
-    locations = json.loads(os.getenv("LOCATIONS"))
-    account_url = os.getenv("BLOB_ACCOUNT_URL")
+    func_account_url = os.getenv("BLOB_ACCOUNT_URL")
     default_credential = DefaultAzureCredential()
     endpoints_file = "noaa_api_endpoints.json"
     container_name = "skiforecast"
     my_content_setting = ContentSettings(content_type = 'application/octet-stream')
 
-    # Enumerate container contents
+    # Enumerate container contents, check for endpoints file
     try:
-        container = ContainerClient(account_url=account_url, container_name=container_name, credential=default_credential)
+        endpoints = False
+        container = ContainerClient(account_url=func_account_url, container_name=container_name, credential=default_credential)
         blob_list = container.list_blobs()
+        for blob in blob_list:    
+            if blob.name == endpoints_file:
+                endpoints = True
     except Exception as e:
-        print(f'Error checking container contents: {e}')
+        logging.info(f'\n\nError checking container contents: {e}\n\n')
+    logging.info(f'\n\nENDPOINTS STATUS: {endpoints}\n\n')
 
-    # Check for endpoints file in blob storage, get endpoints or create endpoints cache if not exists
+    ## Get endpoints or create endpoints cache if not exists
     try:
-        if endpoints_file in [blob.name for blob in blob_list]:
-            blob = utils.readblob(endpoints_file, container_name, account_url, default_credential)
+        if endpoints == True:
+            blob = utils.readblob(endpoints_file, container_name, func_account_url, default_credential)
             endpoints = json.loads(blob.decode())
-        elif endpoints_file not in [blob.name for blob in blob_list]:
+        elif endpoints == False:
             ep = get_endpoints.get_endpoints()
             blob_input = json.dumps(ep, sort_keys=False, indent=4)
-            utils.writeblob(endpoints_file, blob_input, container_name, account_url, default_credential)
+            utils.writeblob(endpoints_file, blob_input, container_name, func_account_url, default_credential)
+            blob = utils.readblob(endpoints_file, container_name, func_account_url, default_credential)
+            endpoints = json.loads(blob.decode())
+        logging.info(f'\n\nENDPOINTS: {endpoints}\n\n')
+
     except Exception as e:
-        print(f'Error fetching endpoints: {e}')
+        logging.info(f'\n\nError fetching endpoints: {e}\n\n')
 
     # Get forecasts, save to blob, list blob names
     try:
         forecasts = get_forecasts.get_forecasts(default_credential, endpoints)
-        #print(f'FORECASTS: {forecasts}')
     except Exception as e:
-        print(f'Error fetching forecasts: {e}')
+        logging.info(f'\n\nError fetching forecasts: {e}\n\n')
 
     # Process forecasts
     try:
         table = proc_forecasts.proc_forecasts(default_credential, now, forecasts)
-        #print(f'TABLE: {table}')
     except Exception as e:
-        print(f'Error processing forecasts: {e}')
+        logging.info(f'\n\nError processing forecasts: {e}\n\n')
 
     # Write table to blob
     try:
-        #table_out = json.dumps(table, sort_keys=False, indent=4)
-        utils.writeblob("tableData.json", json.dumps(table, sort_keys=False, indent=4), container_name, account_url, default_credential)
+        utils.writeblob("tableData.json", json.dumps(table, sort_keys=False, indent=4), container_name, func_account_url, default_credential)
     except Exception as e:
-        print(f'Error writing table to blob: {e}')
+        logging.info(f'\n\nError writing table to blob: {e}\n\n')
 
     #Assign columns and rows
     columns = table['columns']
@@ -126,7 +136,7 @@ def cron(skiForecastTimer: func.TimerRequest) -> None:
 
     # End the HTML output
     html += "</table>"
-    html += f"<h3>Updated: {now.strftime('%Y-%m-%d %H:%M')}</h3>\n"
+    html += f"<h3>Updated: {local_time.strftime('%Y-%m-%d %H:%M')} (PT)</h3>\n"
     html += '<section id="notes">\n<h3>NOTES</h3>\n'
     html += "<dl>\n<dt>- Data compiled from <a href='https://www.noaa.gov/'>NOAA</a> and scored according to subjective criteria for what makes a great ski day</dt>\n"
     html += '<dt>- Hover over table cells for more data</dt>\n'
@@ -146,7 +156,7 @@ def cron(skiForecastTimer: func.TimerRequest) -> None:
     html += '</div>\n</footer>\n'
     html += "</body>\n</html>"
 
-    # Write html file to root directory
+    # Prepare html file for blob write
     soup = BeautifulSoup.BeautifulSoup(html, 'html.parser')
     pretty_html = soup.prettify()
     html_file = 'ski.html'
@@ -155,12 +165,9 @@ def cron(skiForecastTimer: func.TimerRequest) -> None:
     blob_client = container.get_blob_client(html_file)
     web_container = "$web"
     my_content_setting = ContentSettings(content_type = 'text/html')
-
     try:
-        #utils.writeblob(html_file, pretty_html, web_container, account_url, default_credential)
-        # Create a blob service client
-        blob_service_client = BlobServiceClient(account_url=account_url, credential=default_credential)
+        blob_service_client = BlobServiceClient(account_url=func_account_url, credential=default_credential)
         blob_client = blob_service_client.get_blob_client(container=web_container, blob=html_file)
         blob_client.upload_blob(pretty_html, overwrite=True, content_settings=my_content_setting)
     except Exception as e:
-        print(f'Error writing html to blob: {e}')
+        logging.info(f'\n\nError writing html to blob: {e}\n\n')
