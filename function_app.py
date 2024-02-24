@@ -16,6 +16,7 @@ def cron(skiForecastTimer: func.TimerRequest) -> None:
     import get_endpoints as get_endpoints
     import get_forecasts as get_forecasts
     import proc_forecasts as proc_forecasts
+
     from azure.identity import DefaultAzureCredential
     from azure.storage.blob import BlobServiceClient, ContainerClient, ContentSettings
     
