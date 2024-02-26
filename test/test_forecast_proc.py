@@ -2,15 +2,16 @@
 
 import os
 import json
-from datetime import datetime
+from datetime import datetime, time
 import pytz
 import bs4 as BeautifulSoup
 import utils as utils
 
-#now = datetime.now(pytz.UTC)
-now = datetime(2024, 2, 23, 13, 8, 0, 0, pytz.UTC)
-local_time = now.astimezone(pytz.timezone('US/Pacific'))
-
+# Set datetime and timezone
+now = datetime.now(pytz.UTC).date()
+process_time = time(13, 8, 0, 0)
+simulated_time = datetime.combine(now, process_time)
+local_time = simulated_time.astimezone(pytz.timezone('US/Pacific'))
 
 # Define parameters
 locations = {
