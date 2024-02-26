@@ -8,9 +8,11 @@ import bs4 as BeautifulSoup
 import utils as utils
 
 # Set datetime and timezone
-now = datetime.now(pytz.UTC).date()
+now = datetime.now().date()
 process_time = time(13, 8, 0, 0)
+tz = pytz.timezone('UTC')
 simulated_time = datetime.combine(now, process_time)
+simulated_time = tz.localize(simulated_time)
 local_time = simulated_time.astimezone(pytz.timezone('US/Pacific'))
 
 # Define parameters
@@ -69,7 +71,7 @@ for file in files.keys():
     f.close()
 
     # Instantiate TableData object
-    setup = utils.TableData(now, file, time_periods, properties)
+    setup = utils.TableData(simulated_time, file, time_periods, properties)
     print(f'TABLE DATA: {setup}\n')
 
     # Parse forecast data
@@ -101,23 +103,16 @@ for file in files.keys():
     # Create table row
     try:
         row = setup.create_row(table_data)
-        # Append row to table
-        #table.append_row(row)
-        #print(f'ROW:\n{json.dumps(row, sort_keys=False, indent=4)}\n')
     except Exception as e:
         print(f'ERROR CREATING TABLE ROW, {file}: {e}')
 
     table.append_row(row)
 
-#print(f'TABLE: {table.get_table()}\n')
 t = table.get_table()
 
 #Assign columns and rows
 columns = t['columns']
 rows = t['rows']
-
-#print(f'COLUMNS:\n{columns}\n')
-#print(f'ROWS:\n{rows}\n')
 
 # Get dates
 day0 = datetime.strptime(columns[1][1], '%Y-%m-%d')
