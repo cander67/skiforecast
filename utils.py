@@ -1175,6 +1175,10 @@ class TableData:
             precip_range = []
             sky_cover = None
             wind_descr = None
+            weather = None
+            prob_precip = None
+            hi = None
+            lo = None
             try:
                 # Precipitation
                 try:
@@ -1183,18 +1187,45 @@ class TableData:
                     lo = day_data['quantitativePrecipitation']['data']['sum']
                     hi = day_data['snowfallAmount']['data']['sum']
                 except:
-                    prob_precip = day_data['probabilityOfPrecipitation']['data']['avg']
-                    lo = day_data['quantitativePrecipitation']['data']['sum']
-                    hi = day_data['snowfallAmount']['data']['sum']
-                    if hi > 0 and lo > 0:
+                    dt_str = dt.strftime('%Y-%m-%dT06:00:00')
+                    try:
+                        prob_precip = day_data['probabilityOfPrecipitation']['data']['avg']
+                        print(f'EXCEPT: {day}, {prob_precip}')
+                    except:
+                        prob_precip = 0.0
+                        print(f'EXCEPT: {day}, {prob_precip}')
+                    try:    
+                        lo = day_data['quantitativePrecipitation']['data']['sum']
+                        print(f'EXCEPT: {day}, {lo}')
+                    except:
+                        lo = 0.0
+                        print(f'EXCEPT: {day}, {lo}')
+                    try:
+                        hi = day_data['snowfallAmount']['data']['sum']
+                        print(f'EXCEPT: {day}, {hi}')
+                    except:
+                        hi = 0.0
+                        print(f'EXCEPT: {day}, {hi}')
+                    
+                    if hi != None and lo != None:
                         if data['predictions'][day]['time_period']['24h']['data']['temperature']['data']['max'][1] > 32:
-                            weather = [(dt, [['snow'], ['rain']])]
+                            weather = [(dt_str, [['snow'], ['rain']])]
                         if data['predictions'][day]['time_period']['24h']['data']['temperature']['data']['max'][1] <= 32:
-                            weather = [(dt, [['snow']])]
-                    if hi == 0 and lo > 0:
-                        weather = [(dt, [['rain']])]
-                    if hi > 0 and lo == 0:
-                        weather = [(dt, [['snow']])]
+                            weather = [(dt_str, [['snow']])]
+                    #if hi == 0 and lo > 0:
+                        #if data['predictions'][day]['time_period']['24h']['data']['temperature']['data']['max'][1] > 32:
+                            #weather = [(dt_str, [['snow'], ['rain']])]
+                        #if data['predictions'][day]['time_period']['24h']['data']['temperature']['data']['max'][1] <= 32:
+                            #weather = [(dt_str, [['snow']])]
+                        #weather = [(dt_str, [['rain']])]
+                    #if hi > 0 and lo == 0:
+                        #if data['predictions'][day]['time_period']['24h']['data']['temperature']['data']['max'][1] > 32:
+                            #weather = [(dt_str, [['snow'], ['rain']])]
+                        #if data['predictions'][day]['time_period']['24h']['data']['temperature']['data']['max'][1] <= 32:
+                            #weather = [(dt_str, [['snow']])]
+                        #weather = [(dt_str, [['snow']])]
+
+                    print(f'EXCEPT: {day}, WEATHER: {weather}, LO: {lo}, HI: {hi}')
 
                 if (len(weather) == 1 and weather[0][1] == [[None, None, None]]) or ((prob_precip == None) or (lo == None) or (hi == None)):
                     precip_string = 'NONE'
