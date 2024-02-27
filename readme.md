@@ -19,9 +19,9 @@ The following prerequisites must be met for cloud deployment:
 - Microsoft Entra security group
 - Azure RBAC assignments
 - Properly configured environment variables
-    - AZURE_CLIENT_ID
-    - AZURE_TENANT_ID
-    - AZURE_CLIENT_SECRET
+    - `AZURE_CLIENT_ID`
+    - `AZURE_TENANT_ID`
+    - `AZURE_CLIENT_SECRET`
     - User-Agent Header for API requests
 
 ### Installing
