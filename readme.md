@@ -25,8 +25,8 @@ The following prerequisites must be met for cloud deployment:
     - User-Agent Header for API requests
 
 ### Installing
-Install [Azure Developer CLI](https://learn.microsoft.com/en-us/azure/developer/azure-developer-cli/overview)
-Install dependencies from the terminal using the following command: `pip install -r requirements.txt`.
+- Install [Azure Developer CLI](https://learn.microsoft.com/en-us/azure/developer/azure-developer-cli/overview)
+- Install dependencies from the terminal using the following command: `pip install -r requirements.txt`
 
 ## Deployment
 This app is setup for [continous deployment](https://learn.microsoft.com/en-us/azure/azure-functions/functions-continuous-deployment) to [Azure Functions](https://azure.microsoft.com/en-us/products/functions) using [GitHub Actions](https://docs.github.com/en/actions).
