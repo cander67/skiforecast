@@ -1193,31 +1193,20 @@ class TableData:
                     dt_str = dt.strftime('%Y-%m-%dT06:00:00')
                     try:
                         prob_precip = day_data['probabilityOfPrecipitation']['data']['avg']
-                        print(f'EXCEPT: {day}, {prob_precip}')
                     except:
                         prob_precip = 0
-                        print(f'EXCEPT: {day}, {prob_precip}')
                     try:    
                         lo = day_data['quantitativePrecipitation']['data']['sum']
-                        print(f'EXCEPT: {day}, {lo}')
                     except:
                         lo = 0
                         data['predictions'][day]['time_period']['24h']['status']['quantitativePrecipitation'] = 2
-                        #data['predictions'][day]['time_period']['24h']['data'] = {"quantitativePrecipitation": {"units": "in", "data": {'sum': 0}}}
                         data['predictions'][day]['time_period']['24h']['data']['quantitativePrecipitation'] = {"units": "in", "data": {'sum': 0}}
-                        print(f'EXCEPT NEW LO: {day}, {lo}')
                     try:
                         hi = day_data['snowfallAmount']['data']['sum']
-                        print(f'EXCEPT: {day}, {hi}')
-                    except Exception as e:
-                        #print(e)
+                    except:
                         hi = 0
                         data['predictions'][day]['time_period']['24h']['status']['snowfallAmount'] = 2
-                        #data['predictions'][day]['time_period']['24h']['data'] = {"snowfallAmount": {"units": "in", "data": {'sum': 0}}}
                         data['predictions'][day]['time_period']['24h']['data']['snowfallAmount'] = {"units": "in", "data": {'sum': 0}}
-                        print(f'EXCEPT NEW HI: {day}, {hi}')
-
-                    print(f'UPPER EXCEPT: {day}, WEATHER: {weather}, LO: {lo}, HI: {hi}')
 
                     if hi == 0 and lo == 0:
                             weather = [(dt_str, [[None, None, None]])]
@@ -1245,25 +1234,10 @@ class TableData:
                             weather = [(dt_str, [['snow']])]
                             snow = True
 
-                    print(f'LOWER EXCEPT: {day}, WEATHER: {weather}, LO: {lo}, HI: {hi}')
-                    #reference_status = data['predictions'][day]['time_period']['24h']['status']['overall']
-                    #for property in data['predictions'][day]['time_period']['24h']['status'].keys():
-                        #if data["predictions"][day]["time_period"]["24h"]["status"][property] < reference_status:
-                            #reference_status = data["predictions"][day]["time_period"]["24h"]["status"][property]
-                            #data['predictions'][day]['time_period']['24h']['status']['overall'] = reference_status
-
                 if (len(weather) == 1 and weather[0][1] == [[None, None, None]]) or ((prob_precip == None) or (lo == None) or (hi == None)):
                     precip_string = 'NONE'
-                    #snow = False
-                    #rain = False
-                #if (len(weather) == 1 and weather[0][1] == [[None, None, None]]) and ((lo == 0) and (hi == 0)):
-                    #precip_string = 'NONE'
-                    #snow = False
-                    #rain = False
                 if (len(weather) == 1 and weather[0][1] == [[None, None, None]]) and (prob_precip <= 10):
                     precip_string = 'NONE'
-                    #snow = False
-                    #rain = False
                 try:    
                     if (len(weather) == 1 and weather[0][1] == [[None, None, None]]) and (prob_precip > 10):
                         max_temp = data['predictions'][day]['time_period']['24h']['data']['temperature']['data']['max']
@@ -1439,8 +1413,7 @@ class TableData:
                             temp_string = f'{temp[1]:.0f}'
                             alt_temp = list(day_data['temperature']['data'][k])
                             alt_temp[1] = f'{alt_temp[1]:.0f}'
-                        except Exception as e:
-                            #print(f'EXCEPT: {location}, {day}, {k}, {e}')
+                        except:
                             temp_string = '--'
                             alt_temp[1] = 'Incomplete Temp Data'
                         temps.append(temp_string)
