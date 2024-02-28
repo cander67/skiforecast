@@ -3,6 +3,8 @@ Lift tickets are expensive. Ski area parking lots fill up. Day pass limits... Th
 
 Access the [Ski Weather Outlook](https://skiforecast.z5.web.core.windows.net/) app.
 
+Check out how it works [here](https://skiforecast.z5.web.core.windows.net/pages/doc.html).
+
 ### Version 1.0.0 (Released: February 24, 2024)
 
 ## Getting Started
@@ -19,14 +21,14 @@ The following prerequisites must be met for cloud deployment:
 - Microsoft Entra security group
 - Azure RBAC assignments
 - Properly configured environment variables
-    - AZURE_CLIENT_ID
-    - AZURE_TENANT_ID
-    - AZURE_CLIENT_SECRET
+    - `AZURE_CLIENT_ID`
+    - `AZURE_TENANT_ID`
+    - `AZURE_CLIENT_SECRET`
     - User-Agent Header for API requests
 
 ### Installing
 - Install [Azure Developer CLI](https://learn.microsoft.com/en-us/azure/developer/azure-developer-cli/overview)
-- Install dependencies from the terminal using the following command: `pip install -r requirements.txt`.
+- Install dependencies from the terminal using the following command: `pip install -r requirements.txt`
 
 ## Deployment
 This app is setup for [continous deployment](https://learn.microsoft.com/en-us/azure/azure-functions/functions-continuous-deployment) to [Azure Functions](https://azure.microsoft.com/en-us/products/functions) using [GitHub Actions](https://docs.github.com/en/actions).
