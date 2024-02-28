@@ -167,16 +167,14 @@ html += "</tbody>\n"
 html += "</table>"
 html += f"<h3>Updated: {local_time.strftime('%Y-%m-%d %H:%M')} (PT)</h3>\n"
 html += '<section id="notes">\n<h3>NOTES</h3>\n'
-html += "<dl>\n<dt>- Data compiled from <a href='https://www.noaa.gov/'>NOAA</a> and scored according to subjective criteria for what makes a great ski day</dt>\n"
-html += '<dt>- Hover over table cells for more data</dt>\n'
-html += "<dt>- STATUS: <span class='color-1'>RED</span> = Don't Bother | <span class='color-2'>YELLOW</span> = Maybe | <span class='color-3'>GREEN</span> = Shred on!</dt>\n"
-html += '<dt>- MIX: Rain/Snow mixture; forecast snowfall amount reported</dt>\n'
-html += '<dt>- Trace = < 0.1in forecast precip</dt>\n'
-html += '<dt>- SLVL: Snow level; min & max for 24 hrs (6am to 6am) starting on the forecast date</dt>\n'
-html += '<dt>- AM|PM|ON: avg temp, morning = 6am - 12pm | afternoon = 12pm - 6pm | overnight = 6pm - 6am</dt>\n'
-html += '<dt>- MIN|MAX: min & max temp for 24 hrs (6am to 6am) starting on the forecast date</dt>\n'
-html += '<dt>- Questions? Comments? Suggestions? See email link below.</dt>\n'
-html += '</dl>\n'
+html += '<p>\nHover over table cells for more data.\n</p>\n'
+html += '<p>\nKey:\n</p>\n'
+html += '<ul>\n<li><span class="color-3"><b>GREEN</b></span> = Shred on!</li>\n<li><span class="color-2"><b>YELLOW</b></span> = Meh</li>\n<li><span class="color-1"><b>RED</b></span> = Don&#39;t Bother!</li>\n</ul>\n'
+html += '<p>\nAbbreviations:\n</p>\n'
+html += '<ul>\n<li><b>MIX:</b> Rain/Snow mixture; forecast snowfall amount reported</li>\n<li><b>Trace</b> &#8804; 0.1 in forecast precipitation</li>\n<li><b>SLVL:</b> Snow level; min &amp; max for 24 hours (6am&#8211;6am) starting on the forecast date</li>\n<li><b>AM|PM|ON:</b> avg temp, morning = 6am&#8211;12pm | afternoon = 12pm&#8211;6pm | overnight = 6pm&#8211;6am</li>\n<li><b>MIN|MAX:</b> min &amp; max temp for 24 hours (6am&#8211;6am) starting on the forecast date</li>\n</ul>\n'
+html += '<p>\nRead the <a href="https://skiforecast.z5.web.core.windows.net/pages/doc.html">docs.</a>\n</p>\n'
+html += '<p>\nData compiled from <a href="https://www.noaa.gov/">NOAA.</a>\n</p>\n'
+html += '<p>\nQuestions? Comments? Suggestions? Send an <a href="mailto:info@digitalglissade.com">email.</a>\n</p>\n'
 html += '<footer>\n'
 html += '<div class="footer-content">\n'
 html += '<p><a href="mailto:info@digitalglissade.com">info@digitalglissade.com</a></p>\n'
