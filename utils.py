@@ -1142,6 +1142,8 @@ class TableData:
             row (list) : []
         '''
 
+        #print(f'TABLE DATA: {table_data}')
+
         now = self._time
         location = self._location
         data = table_data[location]
@@ -1175,6 +1177,10 @@ class TableData:
             precip_range = []
             sky_cover = None
             wind_descr = None
+            weather = None
+            prob_precip = None
+            hi = None
+            lo = None
             try:
                 # Precipitation
                 try:
@@ -1182,32 +1188,75 @@ class TableData:
                     prob_precip = day_data['probabilityOfPrecipitation']['data']['avg']
                     lo = day_data['quantitativePrecipitation']['data']['sum']
                     hi = day_data['snowfallAmount']['data']['sum']
-                except:
-                    prob_precip = day_data['probabilityOfPrecipitation']['data']['avg']
-                    lo = day_data['quantitativePrecipitation']['data']['sum']
-                    hi = day_data['snowfallAmount']['data']['sum']
-                    if hi > 0 and lo > 0:
-                        if data['predictions'][day]['time_period']['24h']['data']['temperature']['data']['max'][1] > 32:
-                            weather = [(dt, [['snow'], ['rain']])]
-                        if data['predictions'][day]['time_period']['24h']['data']['temperature']['data']['max'][1] <= 32:
-                            weather = [(dt, [['snow']])]
+                except Exception as e:
+                    print(f'EXCEPT: {day}, {e}')
+                    dt_str = dt.strftime('%Y-%m-%dT06:00:00')
+                    try:
+                        prob_precip = day_data['probabilityOfPrecipitation']['data']['avg']
+                    except:
+                        prob_precip = 0
+                    try:    
+                        lo = day_data['quantitativePrecipitation']['data']['sum']
+                    except:
+                        lo = 0
+                        data['predictions'][day]['time_period']['24h']['status']['quantitativePrecipitation'] = 2
+                        data['predictions'][day]['time_period']['24h']['data']['quantitativePrecipitation'] = {"units": "in", "data": {'sum': 0}}
+                    try:
+                        hi = day_data['snowfallAmount']['data']['sum']
+                    except:
+                        hi = 0
+                        data['predictions'][day]['time_period']['24h']['status']['snowfallAmount'] = 2
+                        data['predictions'][day]['time_period']['24h']['data']['snowfallAmount'] = {"units": "in", "data": {'sum': 0}}
+
+                    if hi == 0 and lo == 0:
+                            weather = [(dt_str, [[None, None, None]])]
+                            data['predictions'][day]['time_period']['24h']['status']['weather'] = 2
+                            snow = False
+                            rain = False
                     if hi == 0 and lo > 0:
-                        weather = [(dt, [['rain']])]
+                        if data['predictions'][day]['time_period']['24h']['data']['temperature']['data']['max'][1] > 32:
+                            data['predictions'][day]['time_period']['24h']['status']['weather'] = 1
+                            weather = [(dt_str, [['rain']])]
+                            rain = True
+                        if data['predictions'][day]['time_period']['24h']['data']['temperature']['data']['max'][1] <= 32:
+                            data['predictions'][day]['time_period']['24h']['status']['weather'] = 3
+                            weather = [(dt_str, [['snow']])]
+                            snow = True
                     if hi > 0 and lo == 0:
-                        weather = [(dt, [['snow']])]
+                        if data['predictions'][day]['time_period']['24h']['data']['temperature']['data']['max'][1] > 32:
+                            data['predictions'][day]['time_period']['24h']['status']['weather'] = 2
+                            weather = [(dt_str, [['snow'], ['rain']])]
+                            snow = True
+                            rain = True
+                        if data['predictions'][day]['time_period']['24h']['data']['temperature']['data']['max'][1] <= 32:
+                            data['predictions'][day]['time_period']['24h']['status']['weather'] = 3
+                            data['predictions'][day]['time_period']['24h']['status']['snowfallAmount'] = 3
+                            weather = [(dt_str, [['snow']])]
+                            snow = True
 
                 if (len(weather) == 1 and weather[0][1] == [[None, None, None]]) or ((prob_precip == None) or (lo == None) or (hi == None)):
                     precip_string = 'NONE'
-                if (len(weather) == 1 and weather[0][1] == [[None, None, None]]) and (prob_precip < 10):
+                if (len(weather) == 1 and weather[0][1] == [[None, None, None]]) and (prob_precip <= 10):
                     precip_string = 'NONE'
-                if (len(weather) == 1 and weather[0][1] == [[None, None, None]]) and (prob_precip > 10):
-                    max_temp = data['predictions'][day]['time_period']['24h']['data']['temperature']['data']['max']
-                    if max_temp[1] <= 32:
-                        precip_amt = day_data['snowfallAmount']['data']['sum']
-                        precip_string = f'SNOW: {precip_amt:.1f}in'
-                    if max_temp[1] > 32:
-                        precip_amt = day_data['quantitativePrecipitation']['data']['sum']
-                        precip_string = f'RAIN: {precip_amt:.1f}in'
+                try:    
+                    if (len(weather) == 1 and weather[0][1] == [[None, None, None]]) and (prob_precip > 10):
+                        max_temp = data['predictions'][day]['time_period']['24h']['data']['temperature']['data']['max']
+                        if max_temp[1] <= 32:
+                            precip_amt = day_data['snowfallAmount']['data']['sum']
+                            if precip_amt >= 0.1:
+                                precip_string = f'SNOW: {precip_amt:.1f}in'
+                            if precip_amt < 0.1:
+                                precip_string = 'SNOW: trace'
+                        if max_temp[1] > 32:
+                            precip_amt = day_data['quantitativePrecipitation']['data']['sum']
+                            if precip_amt >= 0.1:
+                                precip_string = f'RAIN: {precip_amt:.1f}in'
+                            if precip_amt < 0.1:
+                                precip_string = 'RAIN: trace'
+                                data['predictions'][day]['time_period']['24h']['status']['weather'] = 1
+                except Exception as e:
+                    print(f'INNER EXCEPT: {day}, {e}')
+                    print(f"output: {data['predictions'][day]['time_period']['24h']['data']}")
 
                 if (len(weather) >= 1 and weather[0][1] != [[None, None, None]]) and prob_precip != None:
                     for i in range(len(weather)):
@@ -1268,6 +1317,12 @@ class TableData:
                             precip_string = f'MIX: trace'
                     if snow == False and rain == False:
                         precip_string = f'NONE'
+
+                reference_status = data['predictions'][day]['time_period']['24h']['status']['overall']
+                for property in data['predictions'][day]['time_period']['24h']['status'].keys():
+                    if data["predictions"][day]["time_period"]["24h"]["status"][property] < reference_status:
+                        reference_status = data["predictions"][day]["time_period"]["24h"]["status"][property]
+                        data['predictions'][day]['time_period']['24h']['status']['overall'] = reference_status
 
                 precipitation = f'{precip_string}, {prob_precip:.0f}%'
 
@@ -1409,6 +1464,7 @@ class TableData:
 
             except Exception as e:
                 logging.info(f'\n\nEXCEPT: {location}, {day}, {e}\n\n')
+                print(f'\n\nEXCEPT: {location}, {day}, {e}\n\n')
                 pass
 
         self._row = row
