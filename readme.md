@@ -3,6 +3,8 @@ Lift tickets are expensive. Ski area parking lots fill up. Day pass limits... Th
 
 Access the [Ski Weather Outlook](https://skiforecast.z5.web.core.windows.net/) app.
 
+Check out how it works [here](https://skiforecast.z5.web.core.windows.net/pages/doc.html).
+
 ### Version 1.0.0 (Released: February 24, 2024)
 
 ## Getting Started
