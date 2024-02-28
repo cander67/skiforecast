@@ -57,88 +57,98 @@ def get_forecasts(default_credential, endpoints):
     # If endpoints are missing, attempt to resolve
     elif len(fails) > 0:
         for location in fails.keys():
+            logging.info(f'\n\nATTEMPTING TO RESOLVE: {location}\n\n')
             http_status = fails[location][0]
             http_error = fails[location][1]
             location_details = locations[location]
             endpoint = endpoints[location]
             blob_name = f'{location}_gridData.json'
             if http_status == None and http_error == True:
+                logging.info(f'\n\nFETCHING NEW ENDPOINTS\n\n')
                 ep = get_endpoints.get_endpoints()
                 forecast = utils.GridData(location, location_details, endpoint, header)
                 data = forecast.get_forecast()
                 response = forecast.get_status()
                 if response == (200, False):
-                    resolved[location] = location   # Remove location from list of failed endpoints
+                    resolved[location] = location   # Add location to list of resolved endpoints
                     utils.writeblob(blob_name, data, container_name, func_account_url, default_credential)
                     forecast_blobs[location] = f'{location}_gridData.json'
                     logging.info(f'\n\nRESOLVED -- LOCATION: {location}, RESPONSE: {response}\n\n')
                 elif response[1] == True:
-                    time.sleep(2)
+                    time.sleep(0.2)
                     fails[location] = response      # Update fails list with new response
                     forecast = utils.GridData(location, location_details, endpoint, header)
                     data = forecast.get_forecast()
                     response = forecast.get_status()
                     if response == (200, False):
-                        resolved[location] = location   # Remove location from list of failed endpoints
+                        resolved[location] = location   # Add location to list of resolved endpoints
                         utils.writeblob(blob_name, data, container_name, func_account_url, default_credential)
                         forecast_blobs[location] = f'{location}_gridData.json'
                         logging.info(f'\n\nRESOLVED -- LOCATION: {location}, RESPONSE: {response}\n\n')
+                    if response[1] == True:
+                        logging.info(f'\n\nCOULD NOT RESOLVE -- LOCATION: {location}, RESPONSE: {response}\n\n')
             elif http_status != None and ((300 <= http_status < 500) and http_error == True):
+                logging.info(f'\n\nFETCHING NEW ENDPOINTS\n\n')
                 ep = get_endpoints.get_endpoints()
                 forecast = utils.GridData(location, location_details, endpoint, header)
                 data = forecast.get_forecast()
                 response = forecast.get_status()
                 if response == (200, False):
-                    resolved[location] = location   # Remove location from list of failed endpoints
+                    resolved[location] = location   # Add location to list of resolved endpoints
                     utils.writeblob(blob_name, data, container_name, func_account_url, default_credential)
                     forecast_blobs[location] = f'{location}_gridData.json'
                     logging.info(f'\n\nRESOLVED -- LOCATION: {location}, RESPONSE: {response}\n\n')
                 elif response[1] == True:
-                    time.sleep(2)
+                    time.sleep(0.2)
                     fails[location] = response      # Update fails list with new response
                     forecast = utils.GridData(location, location_details, endpoint, header)
                     data = forecast.get_forecast()
                     response = forecast.get_status()
                     if response == (200, False):
-                        resolved[location] = location   # Remove location from list of failed endpoints
+                        resolved[location] = location   # Add location to list of resolved endpoints
                         utils.writeblob(blob_name, data, container_name, func_account_url, default_credential)
                         forecast_blobs[location] = f'{location}_gridData.json'
                         logging.info(f'\n\nRESOLVED -- LOCATION: {location}, RESPONSE: {response}\n\n')
+                    if response[1] == True:
+                        logging.info(f'\n\nCOULD NOT RESOLVE -- LOCATION: {location}, RESPONSE: {response}\n\n')
             elif http_status != None and ((500 <= http_status < 600) and http_error == True):
                 forecast = utils.GridData(location, location_details, endpoint, header)
                 data = forecast.get_forecast()
                 response = forecast.get_status()
                 if response == (200, False):
-                    resolved[location] = location   # Remove location from list of failed endpoints
+                    resolved[location] = location   # Add location to list of resolved endpoints
                     utils.writeblob(blob_name, data, container_name, func_account_url, default_credential)
                     forecast_blobs[location] = f'{location}_gridData.json'
                     logging.info(f'\n\nRESOLVED -- LOCATION: {location}, RESPONSE: {response}\n\n')
                 elif response[1] == True:
-                    time.sleep(2)
+                    time.sleep(0.2)
                     fails[location] = response      # Update fails list with new response
                     forecast = utils.GridData(location, location_details, endpoint, header)
                     data = forecast.get_forecast()
                     response = forecast.get_status()
                     if response == (200, False):
-                        resolved[location] = location   # Remove location from list of failed endpoints
+                        resolved[location] = location   # Add location to list of resolved endpoints
                         utils.writeblob(blob_name, data, container_name, func_account_url, default_credential)
                         forecast_blobs[location] = f'{location}_gridData.json'
                         logging.info(f'\n\nRESOLVED -- LOCATION: {location}, RESPONSE: {response}\n\n')
                     elif response[1] == True:
-                        time.sleep(2)
+                        time.sleep(0.2)
                         fails[location] = response      # Update fails list with new response
                         forecast = utils.GridData(location, location_details, endpoint, header)
                         data = forecast.get_forecast()
                         response = forecast.get_status()
                         if response == (200, False):
-                            resolved[location] = location   # Remove location from list of failed endpoints
+                            resolved[location] = location   # Add location to list of resolved endpoints
                             utils.writeblob(blob_name, data, container_name, func_account_url, default_credential)
                             forecast_blobs[location] = f'{location}_gridData.json'
                             logging.info(f'\n\nRESOLVED -- LOCATION: {location}, RESPONSE: {response}\n\n')
+                        if response[1] == True:
+                            logging.info(f'\n\nCOULD NOT RESOLVE -- LOCATION: {location}, RESPONSE: {response}\n\n')
         
             # If all fails are resolved, break loop
             if len(resolved.keys() - fails.keys()) == 0:
                 fails = {}
+                logging.info(f'\n\RESOLVED -- {resolved.keys()}\n\n')
                 break
         
             location = None

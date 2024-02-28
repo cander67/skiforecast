@@ -58,7 +58,7 @@ def cron(skiForecastTimer: func.TimerRequest) -> None:
             utils.writeblob(endpoints_file, blob_input, container_name, func_account_url, default_credential)
             blob = utils.readblob(endpoints_file, container_name, func_account_url, default_credential)
             endpoints = json.loads(blob.decode())
-        logging.info(f'\n\nENDPOINTS: {endpoints}\n\n')
+        #logging.info(f'\n\nENDPOINTS: {endpoints}\n\n')
 
     except Exception as e:
         logging.info(f'\n\nError fetching endpoints: {e}\n\n')
