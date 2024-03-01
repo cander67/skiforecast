@@ -789,11 +789,29 @@ Partly Cloudy">
 
       cells.forEach(function(cell) {
             cell.addEventListener('click', function(event) {
+                  var rect = cell.getBoundingClientRect();
                   popup.style.display = 'block';
-                  popup.style.left = event.clientX + 'px';
-                  popup.style.top = event.clientY + 'px';
                   var textWithLineBreaks = cell.title.replace(/\n/g, '<br>');
                   popup.innerHTML = textWithLineBreaks;
+
+                  var popupWidth = popup.offsetWidth;
+                  var popupHeight = popup.offsetHeight;
+
+                  var viewportWidth = window.innerWidth;
+                  var viewportHeight = window.innerHeight;
+
+                  var left = window.scrollX + rect.left;
+                  var top = window.scrollY + rect.top;
+
+                  if (left + popupWidth > viewportWidth) {
+                        left = viewportWidth - popupWidth - 20;
+                  }
+                  if (top + popupHeight > viewportHeight) {
+                        top = viewportHeight - popupHeight - 20;
+                  }
+
+                  popup.style.left = left + 'px';
+                  popup.style.top = top + 'px';
             });
       });
 
