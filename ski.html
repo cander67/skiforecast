@@ -782,16 +782,16 @@ Partly Cloudy">
     </tr>
    </tbody>
   </table>
-  <div id="popup"></div>
+  <div class="popup"></div>
   <script>
       var cells = document.querySelectorAll('#weather-data th, #weather-data td');
-      var popup = document.getElementById('popup');
+      var popup = document.querySelector('.popup');
 
       cells.forEach(function(cell) {
-            cell.addEventListener('click', function() {
+            cell.addEventListener('click', function(event) {
                   popup.style.display = 'block';
-                  popup.style.left = event.pageX + 'px';
-                  popup.style.top = event.pageY + 'px';
+                  popup.style.left = event.clientX + 'px';
+                  popup.style.top = event.clientY + 'px';
                   var textWithLineBreaks = cell.title.replace(/\n/g, '<br>');
                   popup.innerHTML = textWithLineBreaks;
             });
@@ -800,7 +800,7 @@ Partly Cloudy">
       document.addEventListener('click', function(event) {
             if (event.target !== popup && !Array.from(cells).includes(event.target)) {
                   popup.style.display = 'none';
-            };
+            }
       });
   </script>
   <h3>

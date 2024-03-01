@@ -107,11 +107,11 @@ footer {
 .footer-content a:hover {
     color: #ddd;
 }
-#popup {
+.popup {
     display: none;
     border: 1px solid black;
     padding: 10px;
-    position: absolute;
+    position: fixed;
     font-family: Arial, sans-serif;
     font-size: 14px;
     color: rgb(255, 255, 255);
