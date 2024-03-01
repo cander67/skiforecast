@@ -792,7 +792,8 @@ Partly Cloudy">
                   popup.style.display = 'block';
                   popup.style.left = event.pageX + 'px';
                   popup.style.top = event.pageY + 'px';
-                  popup.textContent = cell.title;
+                  var textWithLineBreaks = cell.title.replace(/\n/g, '<br>');
+                  popup.innerHTML = textWithLineBreaks;
             });
       });
 
