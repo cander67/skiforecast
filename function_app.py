@@ -91,6 +91,39 @@ def cron(skiForecastTimer: func.TimerRequest) -> None:
     start = day0.strftime('%B %d %Y')
     end = day6.strftime('%B %d %Y')
 
+    # JavaScript for creating table cell popups
+    js = """var cells = document.querySelectorAll('#weather-data th, #weather-data td');
+    var popup = document.querySelector('.popup');
+
+    cells.forEach(function(cell) {
+        cell.addEventListener('click', function(event) {
+                popup.style.display = 'block';
+                var textWithLineBreaks = cell.title.replace(/\\n/g, '<br>');
+                popup.innerHTML = textWithLineBreaks;
+
+                var popupWidth = popup.offsetWidth;
+                var viewportWidth = window.innerWidth;
+
+                var left = event.pageX;
+
+                if (left + popupWidth > viewportWidth) {
+                    left = viewportWidth - popupWidth - 20;
+                }
+
+                var top = event.pageY;
+
+                popup.style.left = left + 'px';
+                popup.style.top = top + 'px';
+        });
+    });
+
+    document.addEventListener('click', function(event) {
+        if (event.target !== popup && !Array.from(cells).includes(event.target)) {
+                popup.style.display = 'none';
+        }
+    });
+    """
+
     # Create HTML output
     html = "<!DOCTYPE html>\n"
     html += "<html lang='en'>\n<head>\n"
@@ -134,8 +167,11 @@ def cron(skiForecastTimer: func.TimerRequest) -> None:
         html += "</tr>\n"
     html += "</tbody>\n"
 
-    # End the HTML output
+    # Finish the HTML output
     html += "</table>"
+    html += '<script>'
+    html += f'{js}'
+    html += '</script>'
     html += f"<h3>Updated: {local_time.strftime('%Y-%m-%d %H:%M')} (PT)</h3>\n"
     html += '<section id="notes">\n<h3>NOTES</h3>\n'
     html += '<p>\nHover over table cells for more data.\n</p>\n'
