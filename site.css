@@ -112,5 +112,9 @@ footer {
     border: 1px solid black;
     padding: 10px;
     position: absolute;
-    background-color: white;
+    font-family: Arial, sans-serif;
+    font-size: 14px;
+    color: rgb(255, 255, 255);
+    text-align: center;
+    background-color: #3a3939;
 }
