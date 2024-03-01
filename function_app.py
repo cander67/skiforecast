@@ -174,7 +174,7 @@ def cron(skiForecastTimer: func.TimerRequest) -> None:
     html += '</script>'
     html += f"<h3>Updated: {local_time.strftime('%Y-%m-%d %H:%M')} (PT)</h3>\n"
     html += '<section id="notes">\n<h3>NOTES</h3>\n'
-    html += '<p>\nHover over table cells for more data.\n</p>\n'
+    html += '<p>\nClick or hover over table cells for more data.\n</p>\n'
     html += '<p>\nKey:\n</p>\n'
     html += '<ul>\n<li><span class="color-3"><b>GREEN</b></span> = Shred on!</li>\n<li><span class="color-2"><b>YELLOW</b></span> = Meh</li>\n<li><span class="color-1"><b>RED</b></span> = Don&#39;t Bother!</li>\n</ul>\n'
     html += '<p>\nAbbreviations:\n</p>\n'
