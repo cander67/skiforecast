@@ -782,6 +782,26 @@ Partly Cloudy">
     </tr>
    </tbody>
   </table>
+  <div id="popup"></div>
+  <script>
+      var cells = document.querySelectorAll('#weather-data th, #weather-data td');
+      var popup = document.getElementById('popup');
+
+      cells.forEach(function(cell) {
+            cell.addEventListener('click', function() {
+                  popup.style.display = 'block';
+                  popup.style.left = event.pageX + 'px';
+                  popup.style.top = event.pageY + 'px';
+                  popup.textContent = cell.title;
+            });
+      });
+
+      document.addEventListener('click', function(event) {
+            if (event.target !== popup && !Array.from(cells).includes(event.target)) {
+                  popup.style.display = 'none';
+            };
+      });
+  </script>
   <h3>
    Updated: 2024-03-01 05:08 (PT)
   </h3>
