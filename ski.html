@@ -794,20 +794,15 @@ Partly Cloudy">
                   popup.innerHTML = textWithLineBreaks;
 
                   var popupWidth = popup.offsetWidth;
-                  var popupHeight = popup.offsetHeight;
-
                   var viewportWidth = window.innerWidth;
-                  var viewportHeight = window.innerHeight;
 
-                  var top = event.pageY;
-                  var left = window.scrollX + event.clientX;
+                  var left = event.pageX;
 
                   if (left + popupWidth > viewportWidth) {
                         left = viewportWidth - popupWidth - 20;
                   }
-                  if (top + popupHeight > viewportHeight) {
-                        top = viewportHeight - popupHeight - 20;
-                  }
+
+                  var top = event.pageY;
 
                   popup.style.left = left + 'px';
                   popup.style.top = top + 'px';
