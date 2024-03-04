@@ -91,12 +91,13 @@ def cron(skiForecastTimer: func.TimerRequest) -> None:
     start = day0.strftime('%B %d %Y')
     end = day6.strftime('%B %d %Y')
 
-    # JavaScript for creating table cell popups
-    js = """var cells = document.querySelectorAll('#weather-data th, #weather-data td');
+    # JavaScript for table cell popups
+    js = """
+    var cells = document.querySelectorAll('#weather-data th, #weather-data td');
     var popup = document.querySelector('.popup');
 
     cells.forEach(function(cell) {
-        cell.addEventListener('click', function(event) {
+          cell.addEventListener('click', function(event) {
                 popup.style.display = 'block';
                 var textWithLineBreaks = cell.title.replace(/\\n/g, '<br>');
                 popup.innerHTML = textWithLineBreaks;
@@ -114,13 +115,13 @@ def cron(skiForecastTimer: func.TimerRequest) -> None:
 
                 popup.style.left = left + 'px';
                 popup.style.top = top + 'px';
-        });
+          });
     });
 
     document.addEventListener('click', function(event) {
-        if (event.target !== popup && !Array.from(cells).includes(event.target)) {
+          if (event.target !== popup && !Array.from(cells).includes(event.target)) {
                 popup.style.display = 'none';
-        }
+          }
     });
     """
 
@@ -169,6 +170,7 @@ def cron(skiForecastTimer: func.TimerRequest) -> None:
 
     # Finish the HTML output
     html += "</table>"
+    html += '<div class="popup"></div>'
     html += '<script>'
     html += f'{js}'
     html += '</script>'
