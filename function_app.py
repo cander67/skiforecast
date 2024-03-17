@@ -4,7 +4,7 @@ import logging
 app = func.FunctionApp()
 
 @app.function_name(name = "skiForecastTimer")
-@app.schedule(schedule="0 8 13 * * *", arg_name="skiForecastTimer", run_on_startup=False, use_monitor=False) 
+@app.schedule(schedule="0 0 12 * * *", arg_name="skiForecastTimer", run_on_startup=False, use_monitor=False) 
 def cron(skiForecastTimer: func.TimerRequest) -> None:
     import os
     import json
