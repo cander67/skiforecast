@@ -56,6 +56,7 @@ def get_forecasts(default_credential, endpoints):
         pass
     # If endpoints are missing, attempt to resolve
     elif len(fails) > 0:
+        logging.info(f'\n\nFAILS: {fails}\n\n')
         for location in fails.keys():
             logging.info(f'\n\nATTEMPTING TO RESOLVE: {location}\n\n')
             http_status = fails[location][0]
@@ -145,19 +146,18 @@ def get_forecasts(default_credential, endpoints):
                         if response[1] == True:
                             logging.info(f'\n\nCOULD NOT RESOLVE -- LOCATION: {location}, RESPONSE: {response}\n\n')
         
-            # If all fails are resolved, break loop
-            if len(resolved.keys() - fails.keys()) == 0:
-                fails = {}
-                logging.info(f'\n\RESOLVED -- {resolved.keys()}\n\n')
-                break
-        
             location = None
             location_details = None
             endpoint = None
+            
+        # Remove resolved fails from fails list
+        for key in resolved.keys():
+            if key in fails.keys():
+                del fails[key]
 
-        # Return unresolved fails
+        # Log unresolved fails
         if len(fails) != 0:
-            for key in (resolved.keys() - fails.keys()):
+            for key in resolved.keys():
                 if key in fails.keys():
                     del fails[key] 
             logging.info(f'\n\nUNRESOLVED FAILS: {fails}\n\n')

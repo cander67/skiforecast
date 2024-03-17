@@ -104,7 +104,18 @@ footer {
     text-decoration: none;
     font-size: 0.8em;
 }
-
 .footer-content a:hover {
     color: #ddd;
+}
+.popup {
+    display: none;
+    border: 1px solid black;
+    padding: 10px;
+    position: absolute;
+    font-family: Arial, sans-serif;
+    font-size: 14px;
+    color: rgb(255, 255, 255);
+    text-align: left;
+    background-color: #3a3939;
+    overflow: auto;
 }

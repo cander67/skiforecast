@@ -136,7 +136,7 @@ __azurite_db*__.json
 .pem
 
 # Visual Studio Code
-.vscode/
+.vscode
 
 # Other
 .DS_Store
