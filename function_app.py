@@ -4,7 +4,7 @@ import logging
 app = func.FunctionApp()
 
 @app.function_name(name = "skiForecastTimer")
-@app.schedule(schedule="0 0 12 * * *", arg_name="skiForecastTimer", run_on_startup=False, use_monitor=False) 
+@app.schedule(schedule="0 5 12 * * *", arg_name="skiForecastTimer", run_on_startup=False, use_monitor=False) 
 def cron(skiForecastTimer: func.TimerRequest) -> None:
     import os
     import json
@@ -174,7 +174,7 @@ def cron(skiForecastTimer: func.TimerRequest) -> None:
     html += '<script>'
     html += f'{js}'
     html += '</script>'
-    html += f"<h3>Updated: {local_time.strftime('%Y-%m-%d %H:%M')} (PT)</h3>\n"
+    html += f"<h3>Updated: {local_time.strftime('%Y-%m-%d %H:%M')} (PDT)</h3>\n"
     html += '<section id="notes">\n<h3>NOTES</h3>\n'
     html += '<p>\nClick or hover over table cells for more data.\n</p>\n'
     html += '<p>\nKey:\n</p>\n'
