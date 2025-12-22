@@ -1,9 +1,5 @@
 # Ski Weather Outlook
-Lift tickets are expensive. Ski area parking lots fill up. Day pass limits... There are plenty of reasons to choose wisely when planning a ski weekend. This app helps you plan by providing a dashboard view of NOAA weather forecasts for popular ski areas located in the Cascade Mountains of Washington State. The app updates once per day and summarizes precipitation, snow levels, temperature and wind data for each day of the upcoming week.
-
-Access the [Ski Weather Outlook](https://skiforecast.z5.web.core.windows.net/) app.
-
-Check out how it works [here](https://skiforecast.z5.web.core.windows.net/pages/doc.html).
+Lift tickets are expensive. Ski area parking lots fill up. Day pass limits... There are plenty of reasons to choose wisely when planning a ski weekend. The code in this repository helps you plan by providing an app that uses Azure functions to create a dashboard view of NOAA weather forecasts for popular ski areas located in the Cascade Mountains of Washington State. The app updates once per day and summarizes precipitation, snow levels, temperature and wind data for each day of the upcoming week.
 
 ### Version 1.0.0 (Released: February 24, 2024)
 
