@@ -47,5 +47,5 @@ Written by Cyrus Anderson.
 ## License
 This project is licensed under the MIT License - see the LICENSE file for details.
 
-## Acknowledements
+## Acknowledgements
 Thanks to [varunr89](https://github.com/varunr89) for brainstorming and motivation.
